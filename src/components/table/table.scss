@@ -1,0 +1,28 @@
+.table {
+    .cell-wrapper {
+        display: flex;
+        align-items: center;
+    }
+
+    .image {
+        margin: 0;
+        width: 50px;
+        height: 36px;
+        object-fit: cover;
+        border-radius: 13px;
+        -webkit-border-radius: 13px;
+        -moz-border-radius: 13px;
+        -ms-border-radius: 13px;
+        -o-border-radius: 13px;
+    }
+
+    .status {
+        &.Approved {
+            color: green;
+        }
+
+        &.Pending {
+            color: orange;
+        }
+    }
+}

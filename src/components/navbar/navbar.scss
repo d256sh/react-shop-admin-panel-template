@@ -1,0 +1,105 @@
+.navbar {
+    height: 50px;
+    border-bottom: .5 solid gray;
+    display: flex;
+    color: #333;
+
+    .wrapper {
+        padding: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+
+        .search {
+            display: flex;
+            padding: 3px;
+            border: .5px solid #555;
+            border-radius: 6px;
+
+            input {
+                padding-left: 8px;
+                border: none;
+                outline: none;
+                background-color: transparent;
+
+
+                &::placeholder {
+                    font-size: 12px;
+                }
+            }
+        }
+
+        .items {
+            display: flex;
+            align-items: center;
+
+            .lang {
+                position: relative;
+
+                &_title {
+                    position: absolute;
+                    background-color: orangered;
+                    color: white;
+                    font-weight: 600;
+                    top: -5px;
+                    right: -8px;
+                    margin-inline: 4px;
+                    border-radius: 999px;
+                    -webkit-border-radius: 999px;
+                    -moz-border-radius: 999px;
+                    -ms-border-radius: 999px;
+                    -o-border-radius: 999px;
+                    font-size: 9px;
+                    line-height: 11px;
+                    padding: 2px;
+                }
+
+                &_icon {}
+            }
+
+            .item {
+                display: flex;
+                align-items: center;
+                margin-right: 18px;
+                position: relative;
+
+                .icon {
+                    font-size: 22px;
+                }
+
+                .counter {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-weight: 600;
+                    width: 15px;
+                    height: 15px;
+                    font-size: 10px;
+                    position: absolute;
+                    top: -4px;
+                    right: -4px;
+                    background-color: orangered;
+                    color: white;
+                    border-radius: 9999px;
+                    -webkit-border-radius: 9999px;
+                    -moz-border-radius: 9999px;
+                    -ms-border-radius: 9999px;
+                    -o-border-radius: 9999px;
+                }
+
+                .avatar {
+                    border-radius: 9999px;
+                    background-color: rgb(224, 224, 224);
+                    width: 28px;
+                    height: 28px;
+                    -webkit-border-radius: 9999px;
+                    -moz-border-radius: 9999px;
+                    -ms-border-radius: 9999px;
+                    -o-border-radius: 9999px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,30 @@
+.datatable {
+    padding: 10px;
+
+    .cell-status {
+        &.active {
+            color: rgb(0, 155, 96);
+        }
+
+        &.inactive {
+            color: brown;
+        }
+
+        &.pending {
+            color: orange;
+        }
+    }
+
+    .cell-action {
+        display: flex;
+        gap: 4px;
+        padding: 6px;
+    }
+
+    .btn-view {
+        padding: 2px 6px;
+        color: aquamarine;
+        text-decoration: underline;
+        margin-inline: 8px;
+    }
+}
