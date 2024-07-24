@@ -76,7 +76,7 @@ const Widget = ({ type }) => {
   }
 
   return (
-    <div className="widget">
+    <div className="widget box">
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">

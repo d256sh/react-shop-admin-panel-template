@@ -7,7 +7,7 @@ const Featured = () => {
   const value = 10;
 
   return (
-    <div className="featured">
+    <div className="featured box">
       <div className="top">
         <h1 className="title">Total Revenue</h1>
         <MoreVertOutlined fontSize="small" />
@@ -24,7 +24,7 @@ const Featured = () => {
         <div className="summary">
           <div className="item">
             <div className="title">Target</div>
-            <div className="result">
+            <div className="result positive">
               <KeyboardArrowUp className="arrow" fontSize="small" />
               <span className="amount">$12.4k</span>
             </div>

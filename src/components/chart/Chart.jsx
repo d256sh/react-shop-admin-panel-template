@@ -21,7 +21,7 @@ const color = {
 
 const Chart = () => {
   return (
-    <div className="chart">
+    <div className="chart box">
       <span className="title">Last 6 Mouths (Revenue)</span>
       <ResponsiveContainer width="100%" height={350}>
         <AreaChart

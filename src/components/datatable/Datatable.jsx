@@ -16,12 +16,10 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import { useMemo, useState } from "react";
-import { NavLink } from "react-router-dom";
-import { DeleteOutline } from "@mui/icons-material";
+import { Link } from "react-router-dom";
+import { AddBoxOutlined, DeleteOutline } from "@mui/icons-material";
 
 function createData(id, name, email, age, status) {
   return {
@@ -121,9 +119,10 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
+        <TableCell className="table-cell" padding="checkbox">
           <Checkbox
-            color="primary"
+            style={{ color: "orange" }}
+            color="warning"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
@@ -134,12 +133,16 @@ function EnhancedTableHead(props) {
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
+            className="table-cell"
             key={headCell.id}
             align={"left"}
             padding={headCell.disablePadding ? "none" : "normal"}
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
+              style={{
+                color: orderBy === headCell.id ? "orange" : "inherit",
+              }}
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
@@ -177,12 +180,13 @@ function EnhancedTableToolbar(props) {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.primary.main, theme.palette.action.activatedOpacity),
+            alpha(theme.palette.warning.main, theme.palette.action.activatedOpacity),
         }),
       }}
     >
       {numSelected > 0 ? (
         <Typography
+          className="typography"
           sx={{ flex: "1 1 100%" }}
           color="inherit"
           variant="subtitle1"
@@ -192,6 +196,7 @@ function EnhancedTableToolbar(props) {
         </Typography>
       ) : (
         <Typography
+          className="typography"
           sx={{ flex: "1 1 100%" }}
           variant="h6"
           id="tableTitle"
@@ -208,10 +213,12 @@ function EnhancedTableToolbar(props) {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon color="info" />
-          </IconButton>
+        <Tooltip title="Add">
+          <Link to="/users/new">
+            <IconButton>
+              <AddBoxOutlined color="info" />
+            </IconButton>
+          </Link>
         </Tooltip>
       )}
     </Toolbar>
@@ -288,7 +295,7 @@ export default function DataTable() {
 
   return (
     <Box className="datatable" sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2 }}>
+      <Paper className="box" sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={"small"}>
@@ -316,8 +323,9 @@ export default function DataTable() {
                     selected={isItemSelected}
                     sx={{ cursor: "pointer" }}
                   >
-                    <TableCell padding="checkbox">
+                    <TableCell className="table-cell" padding="checkbox">
                       <Checkbox
+                        style={{ color: "orange" }}
                         color="warning"
                         checked={isItemSelected}
                         inputProps={{
@@ -325,16 +333,28 @@ export default function DataTable() {
                         }}
                       />
                     </TableCell>
-                    <TableCell component="th" id={labelId} scope="row">
+                    <TableCell
+                      className="table-cell"
+                      component="th"
+                      id={labelId}
+                      scope="row"
+                    >
                       {row.id}
                     </TableCell>
-                    <TableCell id={labelId} scope="row" padding="none">
+                    <TableCell
+                      className="table-cell"
+                      id={labelId}
+                      scope="row"
+                      padding="none"
+                    >
                       {row.name}
                     </TableCell>
-                    <TableCell scope="row" padding="none">
+                    <TableCell className="table-cell" scope="row" padding="none">
                       {row.email}
                     </TableCell>
-                    <TableCell scope="row">{row.age}</TableCell>
+                    <TableCell className="table-cell" scope="row">
+                      {row.age}
+                    </TableCell>
                     <TableCell
                       className={`cell-status ${row.status}`}
                       scope="row"
@@ -342,10 +362,14 @@ export default function DataTable() {
                     >
                       {row.status}
                     </TableCell>
-                    <TableCell className="cell-action" scope="row" padding="none">
-                      <NavLink to={`/users/${row.id}`} className="btn-view">
+                    <TableCell
+                      className="table-cell cell-action"
+                      scope="row"
+                      padding="none"
+                    >
+                      <Link to={`/users/${row.id}`} className="btn-view">
                         View
-                      </NavLink>
+                      </Link>
                     </TableCell>
                   </TableRow>
                 );

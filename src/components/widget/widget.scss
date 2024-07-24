@@ -2,14 +2,6 @@
     display: flex;
     justify-content: space-between;
     flex: 1;
-    padding: 10px;
-    box-shadow: 2px 4px 10px 1px rgba(71, 71, 71, 0.186);
-    background-color: #fff;
-    border-radius: 8px;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    -ms-border-radius: 8px;
-    -o-border-radius: 8px;
 
     .left,
     .right {
@@ -30,8 +22,8 @@
         }
 
         .link {
-            color: #333;
-            border-bottom: 1px solid #333;
+            color: gray;
+            border-bottom: 1px solid gray;
             width: max-content;
             font-size: 12px;
             text-decoration: none;

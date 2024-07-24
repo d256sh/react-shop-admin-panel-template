@@ -8,8 +8,8 @@ function CircularProgressWithLabel(props) {
   return (
     <Box sx={{ position: "relative", display: "inline-flex" }}>
       <CircularProgress
-        determinate
-        size={160}
+        color="warning"
+        size={170}
         variant="determinate"
         value={props.value}
       />
@@ -34,11 +34,6 @@ function CircularProgressWithLabel(props) {
 }
 
 CircularProgressWithLabel.propTypes = {
-  /**
-   * The value of the progress indicator for the determinate variant.
-   * Value between 0 and 100.
-   * @default 0
-   */
   value: PropTypes.number.isRequired,
 };
 

@@ -3,10 +3,39 @@
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
+  background-color: #f1f1f1;
+  color: #131313;
+
+  a {
+    color: #131313;
+  }
+}
+
+.dark {
+  background-color: #131313;
+  color: #f1f1f1;
+
+  .box {
+    background-color: #0e0e0e;
+  }
+
+  .table-cell,
+  .typography,
+  a {
+    color: #f1f1f1;
+  }
+
 }
 
 // reuse
 
 .box {
   box-shadow: 2px 4px 10px 1px rgba(71, 71, 71, 0.186);
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 7px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -ms-border-radius: 7px;
+  -o-border-radius: 7px;
 }

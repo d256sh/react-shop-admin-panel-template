@@ -2,9 +2,7 @@ import "./sidebar.scss";
 import React from "react";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import WindowIcon from "@mui/icons-material/Window";
-import SubtitlesIcon from "@mui/icons-material/Subtitles";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import WindowIcon from "@mui/icons-material/Window";import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -25,10 +23,6 @@ const sidebar = [
       { name: "Users", link: "/users", icon: <PeopleAltIcon className="icon" /> },
       { name: "Products", link: "/products", icon: <WindowIcon className="icon" /> },
     ],
-  },
-  {
-    title: "Service",
-    list: [{ name: "Logs", link: "/logs", icon: <SubtitlesIcon className="icon" /> }],
   },
   {
     title: "User",
