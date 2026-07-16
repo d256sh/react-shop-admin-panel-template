@@ -33,7 +33,25 @@ export const resourceConfig = {
       { id: "action", label: "Action", type: "action", disableSort: true },
     ],
   },
+  posts: {
+    title: "Posts",
+    description: "Articles from JSONPlaceholder — open any post to read it.",
+    path: "/posts",
+    newPath: "/posts/new",
+    orderBy: "id",
+    columns: [
+      { id: "id", label: "ID", numeric: true },
+      { id: "title", label: "Post", type: "post" },
+      { id: "author", label: "Author", type: "author" },
+      { id: "words", label: "Words", numeric: true },
+      { id: "status", label: "Status", type: "status" },
+      { id: "action", label: "Action", type: "action", disableSort: true },
+    ],
+  },
 };
 
-export const getResourceFromPath = (pathname) =>
-  pathname.startsWith("/products") ? "products" : "users";
+export const getResourceFromPath = (pathname) => {
+  if (pathname.startsWith("/products")) return "products";
+  if (pathname.startsWith("/posts")) return "posts";
+  return "users";
+};

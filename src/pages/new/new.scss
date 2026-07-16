@@ -20,6 +20,10 @@
     gap: 28px;
     padding: 28px;
 
+    &.post-form .right {
+      flex: 1;
+    }
+
     .left {
       flex: 1;
       text-align: center;
@@ -64,6 +68,28 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 16px;
+
+        &.post-grid .full {
+          grid-column: 1 / -1;
+        }
+      }
+
+      textarea {
+        padding: 11px 14px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xs);
+        background: var(--bg);
+        color: var(--text);
+        outline: none;
+        resize: vertical;
+        min-height: 140px;
+        transition: border-color var(--transition), box-shadow var(--transition);
+
+        &:focus {
+          border-color: var(--accent);
+          box-shadow: 0 0 0 3px var(--accent-soft);
+          background: var(--surface);
+        }
       }
 
       .form-input {

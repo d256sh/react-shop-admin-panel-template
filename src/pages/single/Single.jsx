@@ -1,29 +1,102 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useParams } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
 import Chart from "../../components/chart/Chart";
 import Navbar from "../../components/navbar/Navbar";
 import Sidebar from "../../components/sidebar/Sidebar";
 import Table from "../../components/table/Table";
 import "./single.scss";
-import { Link, useLocation, useParams } from "react-router-dom";
-import CircularProgress from "@mui/material/CircularProgress";
-import {
-  useGetProductQuery,
-  useGetUserQuery,
-} from "../../services/fakeStoreApi";
 import { getResourceFromPath } from "../../utils/resourceConfig";
+import {
+  clearCurrentUser,
+  fetchUserById,
+  selectCurrentUser,
+  selectCurrentUserStatus,
+  selectUsersError,
+} from "../../store/usersSlice";
+import {
+  clearCurrentProduct,
+  fetchProductById,
+  selectCurrentProduct,
+  selectCurrentProductStatus,
+  selectProductsError,
+} from "../../store/productsSlice";
+import {
+  clearCurrentPost,
+  fetchPostById,
+  fetchPostComments,
+  selectCurrentPost,
+  selectCurrentPostStatus,
+  selectPostComments,
+  selectPostCommentsStatus,
+  selectPostsError,
+} from "../../store/postsSlice";
 
 const Single = () => {
+  const dispatch = useDispatch();
   const { pathname } = useLocation();
-  const { userId, productId } = useParams();
+  const { userId, productId, postId } = useParams();
   const resource = getResourceFromPath(pathname);
-  const id = resource === "products" ? productId : userId;
+  const id =
+    resource === "products" ? productId : resource === "posts" ? postId : userId;
 
-  const userQuery = useGetUserQuery(id, { skip: resource !== "users" || !id });
-  const productQuery = useGetProductQuery(id, {
-    skip: resource !== "products" || !id,
-  });
+  const user = useSelector(selectCurrentUser);
+  const product = useSelector(selectCurrentProduct);
+  const post = useSelector(selectCurrentPost);
+  const comments = useSelector(selectPostComments);
+  const userStatus = useSelector(selectCurrentUserStatus);
+  const productStatus = useSelector(selectCurrentProductStatus);
+  const postStatus = useSelector(selectCurrentPostStatus);
+  const commentsStatus = useSelector(selectPostCommentsStatus);
+  const usersError = useSelector(selectUsersError);
+  const productsError = useSelector(selectProductsError);
+  const postsError = useSelector(selectPostsError);
 
-  const query = resource === "products" ? productQuery : userQuery;
-  const { data, isLoading, isError, error } = query;
+  const dataByResource = { users: user, products: product, posts: post };
+  const statusByResource = {
+    users: userStatus,
+    products: productStatus,
+    posts: postStatus,
+  };
+  const errorByResource = {
+    users: usersError,
+    products: productsError,
+    posts: postsError,
+  };
+
+  const data = dataByResource[resource];
+  const status = statusByResource[resource];
+  const error = errorByResource[resource];
+  const isLoading = status === "loading" || status === "idle";
+  const isError = status === "failed";
+
+  useEffect(() => {
+    if (!id) return undefined;
+
+    if (resource === "users") {
+      dispatch(fetchUserById(id));
+    }
+    if (resource === "products") {
+      dispatch(fetchProductById(id));
+    }
+    if (resource === "posts") {
+      dispatch(fetchPostById(id));
+      dispatch(fetchPostComments(id));
+    }
+
+    return () => {
+      if (resource === "users") dispatch(clearCurrentUser());
+      if (resource === "products") dispatch(clearCurrentProduct());
+      if (resource === "posts") dispatch(clearCurrentPost());
+    };
+  }, [dispatch, id, resource]);
+
+  const titles = {
+    users: "User details",
+    products: "Product details",
+    posts: "Post details",
+  };
 
   return (
     <div className="single page-shell">
@@ -32,8 +105,12 @@ const Single = () => {
         <Navbar />
         <div className="page-content">
           <div className="page-intro">
-            <h1>{resource === "products" ? "Product details" : "User details"}</h1>
-            <p>Data loaded with RTK Query from Fake Store API.</p>
+            <h1>{titles[resource]}</h1>
+            <p>
+              {resource === "posts"
+                ? "Read the full post and browse comments."
+                : "Data from Redux store slices."}
+            </p>
           </div>
 
           {isLoading && (
@@ -45,11 +122,63 @@ const Single = () => {
 
           {isError && (
             <div className="state-box error">
-              Failed to load: {error?.status ?? "network error"}
+              Failed to load: {error ?? "network error"}
             </div>
           )}
 
-          {data && (
+          {data && resource === "posts" && (
+            <div className="post-view">
+              <article className="post-card box">
+                <div className="section-head">
+                  <span className={`status-badge ${data.status}`}>{data.status}</span>
+                  <Link to="/posts" className="btn-edit">
+                    Back to posts
+                  </Link>
+                </div>
+                <h2 className="post-title">{data.title}</h2>
+                <div className="post-meta">
+                  <Link to={data.authorLink} className="cell-link">
+                    {data.author}
+                  </Link>
+                  <span>·</span>
+                  <span>{data.words} words</span>
+                  <span>·</span>
+                  <span>Post #{data.id}</span>
+                </div>
+                <p className="post-body">{data.body}</p>
+              </article>
+
+              <section className="comments box">
+                <div className="section-head">
+                  <h3 className="title">Comments ({comments.length})</h3>
+                </div>
+                {commentsStatus === "loading" && (
+                  <div className="state-box compact">
+                    <CircularProgress size={22} sx={{ color: "var(--accent)" }} />
+                    <span>Loading comments…</span>
+                  </div>
+                )}
+                {commentsStatus !== "loading" && comments.length === 0 && (
+                  <p className="empty-comments">No comments yet.</p>
+                )}
+                <ul className="comments-list">
+                  {comments.map((comment) => (
+                    <li key={comment.id} className="comment-item">
+                      <div className="comment-head">
+                        <strong>{comment.name}</strong>
+                        <a className="cell-link" href={`mailto:${comment.email}`}>
+                          {comment.email}
+                        </a>
+                      </div>
+                      <p>{comment.body}</p>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            </div>
+          )}
+
+          {data && resource !== "posts" && (
             <>
               <div className="top">
                 <div className="left box">
@@ -65,7 +194,7 @@ const Single = () => {
                       src={
                         resource === "products"
                           ? data.image
-                          : `https://i.pravatar.cc/160?u=${data.email}`
+                          : data.avatar || `https://i.pravatar.cc/160?u=${data.email}`
                       }
                       alt={resource === "products" ? data.title : data.name}
                     />
@@ -79,7 +208,9 @@ const Single = () => {
                         <>
                           <div className="detail">
                             <span className="item_key">Price</span>
-                            <span className="item_value">${Number(data.price).toFixed(2)}</span>
+                            <span className="item_value">
+                              ${Number(data.price).toFixed(2)}
+                            </span>
                           </div>
                           <div className="detail">
                             <span className="item_key">Category</span>

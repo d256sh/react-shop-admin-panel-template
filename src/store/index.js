@@ -1,13 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { setupListeners } from "@reduxjs/toolkit/query";
-import { fakeStoreApi } from "../services/fakeStoreApi";
+import usersReducer from "./usersSlice";
+import productsReducer from "./productsSlice";
+import postsReducer from "./postsSlice";
 
 export const store = configureStore({
   reducer: {
-    [fakeStoreApi.reducerPath]: fakeStoreApi.reducer,
+    users: usersReducer,
+    products: productsReducer,
+    posts: postsReducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(fakeStoreApi.middleware),
 });
-
-setupListeners(store.dispatch);

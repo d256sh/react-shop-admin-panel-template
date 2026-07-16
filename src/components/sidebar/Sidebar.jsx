@@ -2,6 +2,7 @@ import "./sidebar.scss";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import WindowIcon from "@mui/icons-material/Window";
+import ArticleIcon from "@mui/icons-material/Article";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { NavLink } from "react-router-dom";
@@ -19,6 +20,7 @@ const sidebar = [
     list: [
       { name: "Users", link: "/users", icon: <PeopleAltIcon className="icon" /> },
       { name: "Products", link: "/products", icon: <WindowIcon className="icon" /> },
+      { name: "Posts", link: "/posts", icon: <ArticleIcon className="icon" /> },
     ],
   },
   {

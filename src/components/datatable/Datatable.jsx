@@ -18,16 +18,35 @@ import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
 import CircularProgress from "@mui/material/CircularProgress";
 import { visuallyHidden } from "@mui/utils";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { AddBoxOutlined, DeleteOutline } from "@mui/icons-material";
-import {
-  useDeleteProductMutation,
-  useDeleteUserMutation,
-  useGetProductsQuery,
-  useGetUsersQuery,
-} from "../../services/fakeStoreApi";
 import { resourceConfig } from "../../utils/resourceConfig";
+import {
+  fetchUsers,
+  removeUsers,
+  selectUsers,
+  selectUsersActionStatus,
+  selectUsersError,
+  selectUsersStatus,
+} from "../../store/usersSlice";
+import {
+  fetchProducts,
+  removeProducts,
+  selectProducts,
+  selectProductsActionStatus,
+  selectProductsError,
+  selectProductsStatus,
+} from "../../store/productsSlice";
+import {
+  fetchPosts,
+  removePosts,
+  selectPosts,
+  selectPostsActionStatus,
+  selectPostsError,
+  selectPostsStatus,
+} from "../../store/postsSlice";
 
 function descendingComparator(a, b, orderBy) {
   const aValue = a[orderBy];
@@ -226,6 +245,23 @@ function renderCell(column, row, resourcePath) {
           </div>
         </div>
       );
+    case "post":
+      return (
+        <div className="cell-stack cell-post">
+          <span className="cell-primary">{row.title}</span>
+          <span className="cell-secondary">{row.excerpt}</span>
+        </div>
+      );
+    case "author":
+      return (
+        <Link
+          to={row.authorLink}
+          className="cell-link"
+          onClick={(event) => event.stopPropagation()}
+        >
+          {row.author}
+        </Link>
+      );
     case "category":
       return <span className="cell-chip">{row.category}</span>;
     case "price":
@@ -256,16 +292,57 @@ function renderCell(column, row, resourcePath) {
 
 export default function DataTable({ resource = "users" }) {
   const config = resourceConfig[resource];
-  const usersQuery = useGetUsersQuery(undefined, { skip: resource !== "users" });
-  const productsQuery = useGetProductsQuery(undefined, {
-    skip: resource !== "products",
-  });
-  const [deleteUser, { isLoading: isDeletingUser }] = useDeleteUserMutation();
-  const [deleteProduct, { isLoading: isDeletingProduct }] = useDeleteProductMutation();
+  const dispatch = useDispatch();
 
-  const query = resource === "products" ? productsQuery : usersQuery;
-  const rows = useMemo(() => query.data ?? [], [query.data]);
-  const { isLoading, isError, error, isFetching } = query;
+  const users = useSelector(selectUsers);
+  const products = useSelector(selectProducts);
+  const posts = useSelector(selectPosts);
+  const usersStatus = useSelector(selectUsersStatus);
+  const productsStatus = useSelector(selectProductsStatus);
+  const postsStatus = useSelector(selectPostsStatus);
+  const usersError = useSelector(selectUsersError);
+  const productsError = useSelector(selectProductsError);
+  const postsError = useSelector(selectPostsError);
+  const usersActionStatus = useSelector(selectUsersActionStatus);
+  const productsActionStatus = useSelector(selectProductsActionStatus);
+  const postsActionStatus = useSelector(selectPostsActionStatus);
+
+  const rowsByResource = { users, products, posts };
+  const statusByResource = {
+    users: usersStatus,
+    products: productsStatus,
+    posts: postsStatus,
+  };
+  const errorByResource = {
+    users: usersError,
+    products: productsError,
+    posts: postsError,
+  };
+  const actionStatusByResource = {
+    users: usersActionStatus,
+    products: productsActionStatus,
+    posts: postsActionStatus,
+  };
+
+  const rows = rowsByResource[resource];
+  const status = statusByResource[resource];
+  const error = errorByResource[resource];
+  const actionStatus = actionStatusByResource[resource];
+  const isLoading = status === "loading" || status === "idle";
+  const isError = status === "failed";
+  const isDeleting = actionStatus === "loading";
+
+  useEffect(() => {
+    if (resource === "users" && usersStatus === "idle") {
+      dispatch(fetchUsers());
+    }
+    if (resource === "products" && productsStatus === "idle") {
+      dispatch(fetchProducts());
+    }
+    if (resource === "posts" && postsStatus === "idle") {
+      dispatch(fetchPosts());
+    }
+  }, [dispatch, resource, usersStatus, productsStatus, postsStatus]);
 
   const [order, setOrder] = useState("asc");
   const [orderBy, setOrderBy] = useState(config.orderBy);
@@ -308,11 +385,12 @@ export default function DataTable({ resource = "users" }) {
 
   const handleDelete = async () => {
     try {
-      await Promise.all(
-        selected.map((id) =>
-          resource === "products" ? deleteProduct(id).unwrap() : deleteUser(id).unwrap()
-        )
-      );
+      const removeByResource = {
+        users: removeUsers,
+        products: removeProducts,
+        posts: removePosts,
+      };
+      await dispatch(removeByResource[resource](selected)).unwrap();
       setSelected([]);
     } catch (err) {
       console.error("Delete failed", err);
@@ -343,7 +421,7 @@ export default function DataTable({ resource = "users" }) {
   if (isError) {
     return (
       <Box className="datatable state-box error">
-        Failed to load {config.title.toLowerCase()}: {error?.status ?? "network error"}
+        Failed to load {config.title.toLowerCase()}: {error ?? "network error"}
       </Box>
     );
   }
@@ -352,14 +430,14 @@ export default function DataTable({ resource = "users" }) {
     <Box className="datatable" sx={{ width: "100%" }}>
       <Paper
         className="datatable-paper"
-        sx={{ width: "100%", mb: 2, backgroundImage: "none", opacity: isFetching ? 0.85 : 1 }}
+        sx={{ width: "100%", mb: 2, backgroundImage: "none" }}
       >
         <EnhancedTableToolbar
           numSelected={selected.length}
           title={config.title}
           newPath={config.newPath}
           onDelete={handleDelete}
-          isDeleting={isDeletingUser || isDeletingProduct}
+          isDeleting={isDeleting}
         />
         <TableContainer>
           <Table sx={{ minWidth: 980 }} aria-labelledby="tableTitle" size="small">
@@ -435,5 +513,5 @@ export default function DataTable({ resource = "users" }) {
 }
 
 DataTable.propTypes = {
-  resource: PropTypes.oneOf(["users", "products"]),
+  resource: PropTypes.oneOf(["users", "products", "posts"]),
 };
