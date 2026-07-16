@@ -18,7 +18,7 @@ const Home = () => {
   const updatedAt = useAppSelector(selectDashboardUpdatedAt);
 
   useEffect(() => {
-    document.title = "Dashboard — DA Control";
+    document.title = "Dashboard — DS Control";
   }, []);
 
   useEffect(() => {

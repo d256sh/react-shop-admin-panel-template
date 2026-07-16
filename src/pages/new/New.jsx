@@ -41,7 +41,7 @@ const New = () => {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    document.title = `Add ${config.title.slice(0, -1)} — DA Control`;
+    document.title = `Add ${config.title.slice(0, -1)} — DS Control`;
   }, [config.title]);
 
   // Revoke blob URLs to avoid memory leaks after local image preview.

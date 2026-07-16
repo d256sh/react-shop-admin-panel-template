@@ -12,7 +12,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   useEffect(() => {
-    document.title = "Login — DA Control";
+    document.title = "Login — DS Control";
   }, []);
 
   return (

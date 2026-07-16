@@ -8,7 +8,7 @@ const List = () => {
   const { resource, config } = useResource();
 
   useEffect(() => {
-    document.title = `${config.title} — DA Control`;
+    document.title = `${config.title} — DS Control`;
   }, [config.title]);
 
   return (

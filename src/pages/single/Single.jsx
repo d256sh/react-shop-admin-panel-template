@@ -81,7 +81,7 @@ const Single = () => {
   const isError = status === "failed";
 
   useEffect(() => {
-    document.title = `${DETAIL_TITLES[resource]} — DA Control`;
+    document.title = `${DETAIL_TITLES[resource]} — DS Control`;
   }, [resource]);
 
   // Detail screens reuse dashboard chart/transactions — load once if needed.
