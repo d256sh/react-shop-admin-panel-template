@@ -1,4 +1,6 @@
-const BASE_URL = "https://jsonplaceholder.typicode.com";
+import { API } from "../constants";
+
+const BASE_URL = API.jsonPlaceholder;
 
 const getPostStatus = (id) => {
   if (id % 5 === 0) return "pending";

@@ -1,70 +1,109 @@
-# Getting Started with Create React App
+# DA Control — React Admin Panel
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+**English** · [Українська](./README.uk.md)
 
-## Available Scripts
+Portfolio / interview project: a compact admin dashboard built with **React 18**, **Redux Toolkit**, **React Router**, **MUI**, and **Sass**.
 
-In the project directory, you can run:
+Public mock APIs:
+- [Fake Store API](https://fakestoreapi.com/) — users, products, carts
+- [JSONPlaceholder](https://jsonplaceholder.typicode.com/) — posts & comments
 
-### `npm start`
+> **Status:** intentionally incomplete demo. Core CRUD-style flows and dashboard state are in place; auth, real backend, and full edit UX are out of scope (see [Roadmap](#roadmap)).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+---
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Quick start
 
-### `npm test`
+```bash
+npm install
+npm start
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+App: [http://localhost:3000](http://localhost:3000)
 
-### `npm run build`
+```bash
+npm run build   # production bundle
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+---
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## What this project demonstrates
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+| Area | Approach |
+| --- | --- |
+| State | Redux Toolkit slices (`createSlice` + `createAsyncThunk`) |
+| Data access | Thin `services/` layer (fetch + mappers), no logic in UI |
+| Routing | Nested React Router v6 routes per resource |
+| UI | Shared layout, design tokens in CSS variables, light/dark theme |
+| Tables | Sortable/paginated list views driven by `resourceConfig` |
 
-### `npm run eject`
+---
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Project structure
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```text
+src/
+  components/     # Reusable UI (layout, tables, charts, widgets)
+  context/        # Dark mode (local UI concern, not business data)
+  hooks/          # Shared hooks (resource path, store helpers)
+  pages/          # Route-level screens
+  services/       # API clients + response mappers
+  store/          # Redux store + feature slices
+  utils/          # Pure helpers / resource column config
+  constants/      # App-wide constants (API base URLs)
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+### Store (business data)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+| Slice | Responsibility |
+| --- | --- |
+| `usersSlice` | User list, current user, create/delete |
+| `productsSlice` | Product list, current product, create/delete |
+| `postsSlice` | Posts, current post, comments, create/delete |
+| `dashboardSlice` | Widgets, featured revenue, chart series, transactions |
 
-## Learn More
+Each slice owns: `initialState`, async thunks, reducers, and **selectors**. Components talk to the store via `useDispatch` / `useSelector` only.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Services
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+| File | Role |
+| --- | --- |
+| `fakeStore.js` | Fake Store HTTP + `mapUser` / `mapProduct` |
+| `postsService.js` | JSONPlaceholder posts/comments |
+| `dashboardService.js` | Builds dashboard DTO from users + products + carts |
 
-### Code Splitting
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Main routes
 
-### Analyzing the Bundle Size
+| Path | Screen |
+| --- | --- |
+| `/` | Dashboard |
+| `/users`, `/users/:id`, `/users/new` | Users |
+| `/products`, `/products/:id`, `/products/new` | Products |
+| `/posts`, `/posts/:id`, `/posts/new` | Posts |
+| `/login` | Login UI mock (no real auth yet) |
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Static routes such as `new` are registered **before** dynamic `:id` params.
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Conventions (for contributors)
 
-### Advanced Configuration
+1. **UI does not call `fetch` directly** — use a service, then a thunk.
+2. **Selectors live next to the slice** that owns the state.
+3. **Resource screens** (`List` / `Single` / `New`) share one implementation keyed by `resourceConfig`.
+4. Prefer small pure helpers in `utils/` over copy-paste in components.
+5. Mark unfinished product areas with `TODO` comments (search the repo).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## Roadmap (known gaps)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- [ ] Real authentication / protected routes
+- [ ] Edit flows (currently stubbed to dashboard / home)
+- [ ] Optimistic updates & server-side pagination
+- [ ] Unit tests for mappers and slices
+- [ ] Replace CRA with Vite when scaling the app
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+These gaps are deliberate for a small portfolio sample — the focus is readable architecture and clean Redux usage.

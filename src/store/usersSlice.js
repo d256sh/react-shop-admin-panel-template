@@ -1,3 +1,14 @@
+/**
+ * Users feature slice.
+ *
+ * Pattern (classic RTK):
+ * - initialState describes the shape of this domain
+ * - createAsyncThunk handles remote work via services/
+ * - selectors are the only public read API for components
+ *
+ * TODO: add updateUser thunk + edit form when the product needs full CRUD.
+ */
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fakeStoreService } from "../services/fakeStore";
 

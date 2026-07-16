@@ -1,32 +1,24 @@
-import "./list.scss";
-import Sidebar from "../../components/sidebar/Sidebar";
-import Navbar from "../../components/navbar/Navbar";
+import { useEffect } from "react";
+import Layout from "../../components/layout/Layout";
 import DataTable from "../../components/datatable/Datatable";
-import { useLocation } from "react-router-dom";
-import {
-  getResourceFromPath,
-  resourceConfig,
-} from "../../utils/resourceConfig";
+import { useResource } from "../../hooks/useResource";
+import "./list.scss";
 
 const List = () => {
-  const { pathname } = useLocation();
-  const resource = getResourceFromPath(pathname);
-  const config = resourceConfig[resource];
+  const { resource, config } = useResource();
+
+  useEffect(() => {
+    document.title = `${config.title} — DA Control`;
+  }, [config.title]);
 
   return (
-    <div className="list page-shell">
-      <Sidebar />
-      <div className="list_container page-main">
-        <Navbar />
-        <div className="page-content">
-          <div className="page-intro">
-            <h1>{config.title}</h1>
-            <p>{config.description}</p>
-          </div>
-          <DataTable resource={resource} />
-        </div>
+    <Layout className="list">
+      <div className="page-intro">
+        <h1>{config.title}</h1>
+        <p>{config.description}</p>
       </div>
-    </div>
+      <DataTable resource={resource} />
+    </Layout>
   );
 };
 

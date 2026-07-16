@@ -1,7 +1,7 @@
 import { KeyboardArrowDown, KeyboardArrowUp, MoreVertOutlined } from "@mui/icons-material";
 import "./featured.scss";
 import CircularProgressWithLabel from "../CircularWithValueLabel";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../hooks/redux";
 import { selectDashboardFeatured } from "../../store/dashboardSlice";
 
 const money = (value) =>
@@ -10,7 +10,7 @@ const money = (value) =>
   })}`;
 
 const Featured = () => {
-  const featured = useSelector(selectDashboardFeatured);
+  const featured = useAppSelector(selectDashboardFeatured);
 
   return (
     <div className="featured box">

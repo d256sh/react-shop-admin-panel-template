@@ -1,3 +1,8 @@
+/**
+ * Products feature slice — list, current entity, create/delete.
+ * TODO: updateProduct when edit UI is implemented.
+ */
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { fakeStoreService } from "../services/fakeStore";
 

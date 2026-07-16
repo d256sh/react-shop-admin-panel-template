@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { stat } from "../../static";
 import "./login.scss";
 
+/**
+ * Login is a UI mock only — no auth API yet.
+ * TODO: connect to real auth + protect admin routes.
+ */
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    document.title = "Login — DA Control";
+  }, []);
 
   return (
     <div className="login">

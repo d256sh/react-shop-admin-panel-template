@@ -7,8 +7,8 @@ import {
   ShoppingCartOutlined,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
 import "./widget.scss";
+import { useAppSelector } from "../../hooks/redux";
 import { selectDashboardWidgets } from "../../store/dashboardSlice";
 
 const metaByType = {
@@ -43,7 +43,7 @@ const metaByType = {
 };
 
 const Widget = ({ type }) => {
-  const widgets = useSelector(selectDashboardWidgets);
+  const widgets = useAppSelector(selectDashboardWidgets);
   const stats = widgets[type];
   const meta = metaByType[type];
 

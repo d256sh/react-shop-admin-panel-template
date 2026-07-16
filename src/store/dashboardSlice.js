@@ -1,3 +1,9 @@
+/**
+ * Dashboard aggregate slice.
+ * Widgets / featured / chart / transactions are derived in dashboardService
+ * from Fake Store users + products + carts, then stored here for UI selectors.
+ */
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { dashboardService } from "../services/dashboardService";
 

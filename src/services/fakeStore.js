@@ -1,4 +1,6 @@
-const FAKE_STORE_URL = "https://fakestoreapi.com";
+import { API } from "../constants";
+
+const FAKE_STORE_URL = API.fakeStore;
 
 const getUserStatus = (id) => {
   if (id % 3 === 0) return "pending";
@@ -6,7 +8,7 @@ const getUserStatus = (id) => {
   return "active";
 };
 
-/** Override API users 2 and 6 as female profiles */
+// Override API users 2 and 6 as female profiles
 const FEMALE_BY_ID = {
   2: {
     firstname: "Anna",

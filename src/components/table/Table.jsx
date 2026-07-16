@@ -8,7 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Link } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../hooks/redux";
 import {
   selectDashboardStatus,
   selectDashboardTransactions,
@@ -26,8 +26,8 @@ const columns = [
 ];
 
 const Table = () => {
-  const rows = useSelector(selectDashboardTransactions);
-  const status = useSelector(selectDashboardStatus);
+  const rows = useAppSelector(selectDashboardTransactions);
+  const status = useAppSelector(selectDashboardStatus);
 
   if (status === "loading" || status === "idle") {
     return (

@@ -8,6 +8,11 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { NavLink } from "react-router-dom";
 import { stat } from "../../static";
 
+/**
+ * Sidebar nav config.
+ * TODO: Profile / Logout need real auth; Logout currently opens the login mock.
+ */
+
 const sidebar = [
   {
     title: "Main",
@@ -24,19 +29,21 @@ const sidebar = [
     ],
   },
   {
-    title: "User",
+    title: "Account",
     list: [
-      { name: "Profile", link: "/", icon: <AccountCircleIcon className="icon" /> },
-      { name: "Logout", link: "/", icon: <LogoutIcon className="icon" /> },
+      { name: "Profile", link: "/users/1", icon: <AccountCircleIcon className="icon" /> },
+      { name: "Logout", link: "/login", icon: <LogoutIcon className="icon" /> },
     ],
   },
 ];
 
 const Sidebar = () => {
   return (
-    <aside className="sidebar">
+    <aside className="sidebar" aria-label="Main navigation">
       <header>
-        <span className="logo-mark">DA</span>
+        <span className="logo-mark" aria-hidden="true">
+          DS
+        </span>
         <span className="logo">{stat.site_name}</span>
       </header>
 
@@ -62,8 +69,8 @@ const Sidebar = () => {
 
       <footer className="sidebar-footer">
         <div className="footer-card">
-          <p className="footer-title">Need help?</p>
-          <p className="footer-text">Check docs & shortcuts</p>
+          <p className="footer-title">Demo panel</p>
+          <p className="footer-text">See README for architecture notes</p>
         </div>
       </footer>
     </aside>

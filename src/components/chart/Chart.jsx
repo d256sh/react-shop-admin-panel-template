@@ -8,7 +8,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { useSelector } from "react-redux";
+import { useAppSelector } from "../../hooks/redux";
 import { selectDashboardChart } from "../../store/dashboardSlice";
 
 const color = {
@@ -20,7 +20,7 @@ const color = {
 };
 
 const Chart = ({ title = "Last 6 Months (Revenue)" }) => {
-  const chartData = useSelector(selectDashboardChart);
+  const chartData = useAppSelector(selectDashboardChart);
 
   return (
     <div className="chart box">

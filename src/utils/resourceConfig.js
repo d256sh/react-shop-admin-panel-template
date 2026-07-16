@@ -1,3 +1,8 @@
+/**
+ * Column / meta config for shared List + Datatable screens.
+ * Keep presentational table schema out of Redux — only domain data lives in slices.
+ */
+
 export const resourceConfig = {
   users: {
     title: "Users",

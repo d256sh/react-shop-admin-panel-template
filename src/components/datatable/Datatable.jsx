@@ -19,9 +19,10 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { visuallyHidden } from "@mui/utils";
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
 import { AddBoxOutlined, DeleteOutline } from "@mui/icons-material";
 import { resourceConfig } from "../../utils/resourceConfig";
+import { getComparator, stableSort } from "../../utils/tableSort";
+import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import {
   fetchUsers,
   removeUsers,
@@ -46,30 +47,6 @@ import {
   selectPostsError,
   selectPostsStatus,
 } from "../../store/postsSlice";
-
-function descendingComparator(a, b, orderBy) {
-  const aValue = a[orderBy];
-  const bValue = b[orderBy];
-  if (bValue < aValue) return -1;
-  if (bValue > aValue) return 1;
-  return 0;
-}
-
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 function EnhancedTableHead({
   columns,
@@ -273,20 +250,20 @@ function renderCell(column, row, resourcePath) {
 
 export default function DataTable({ resource = "users" }) {
   const config = resourceConfig[resource];
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
-  const users = useSelector(selectUsers);
-  const products = useSelector(selectProducts);
-  const posts = useSelector(selectPosts);
-  const usersStatus = useSelector(selectUsersStatus);
-  const productsStatus = useSelector(selectProductsStatus);
-  const postsStatus = useSelector(selectPostsStatus);
-  const usersError = useSelector(selectUsersError);
-  const productsError = useSelector(selectProductsError);
-  const postsError = useSelector(selectPostsError);
-  const usersActionStatus = useSelector(selectUsersActionStatus);
-  const productsActionStatus = useSelector(selectProductsActionStatus);
-  const postsActionStatus = useSelector(selectPostsActionStatus);
+  const users = useAppSelector(selectUsers);
+  const products = useAppSelector(selectProducts);
+  const posts = useAppSelector(selectPosts);
+  const usersStatus = useAppSelector(selectUsersStatus);
+  const productsStatus = useAppSelector(selectProductsStatus);
+  const postsStatus = useAppSelector(selectPostsStatus);
+  const usersError = useAppSelector(selectUsersError);
+  const productsError = useAppSelector(selectProductsError);
+  const postsError = useAppSelector(selectPostsError);
+  const usersActionStatus = useAppSelector(selectUsersActionStatus);
+  const productsActionStatus = useAppSelector(selectProductsActionStatus);
+  const postsActionStatus = useAppSelector(selectPostsActionStatus);
 
   const rowsByResource = { users, products, posts };
   const statusByResource = {

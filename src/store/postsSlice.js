@@ -1,3 +1,8 @@
+/**
+ * Posts feature slice (JSONPlaceholder).
+ * Includes comments for the post detail view.
+ */
+
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { postsService } from "../services/postsService";
 
