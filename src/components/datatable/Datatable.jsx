@@ -16,39 +16,24 @@ import Paper from "@mui/material/Paper";
 import Checkbox from "@mui/material/Checkbox";
 import IconButton from "@mui/material/IconButton";
 import Tooltip from "@mui/material/Tooltip";
+import CircularProgress from "@mui/material/CircularProgress";
 import { visuallyHidden } from "@mui/utils";
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import { AddBoxOutlined, DeleteOutline } from "@mui/icons-material";
-
-function createData(id, name, email, age, status) {
-  return {
-    id,
-    name,
-    email,
-    age,
-    status,
-  };
-}
-
-const rows = [
-  createData(1, "Cupcake", "den4ik9821@gmail.com", 18, "active"),
-  createData(2, "Donut", "den4ik9821@gmail.com", 18, "inactive"),
-  createData(3, "Eclair", "den4ik9821@gmail.com", 18, "pending"),
-  createData(4, "Frozen yoghurt", "den4ik9821@gmail.com", 18, "active"),
-  createData(5, "Gingerbread", "den4ik9821@gmail.com", 18, "active"),
-  createData(6, "Honeycomb", "den4ik9821@gmail.com", 18, "active"),
-  createData(7, "Ice cream sandwich", "den4ik9821@gmail.com", 18, "active"),
-  createData(8, "Jelly Bean", "den4ik9821@gmail.com", 18, "active"),
-];
+import {
+  useDeleteProductMutation,
+  useDeleteUserMutation,
+  useGetProductsQuery,
+  useGetUsersQuery,
+} from "../../services/fakeStoreApi";
+import { resourceConfig } from "../../utils/resourceConfig";
 
 function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
+  const aValue = a[orderBy];
+  const bValue = b[orderBy];
+  if (bValue < aValue) return -1;
+  if (bValue > aValue) return 1;
   return 0;
 }
 
@@ -62,56 +47,21 @@ function stableSort(array, comparator) {
   const stabilizedThis = array.map((el, index) => [el, index]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
+    if (order !== 0) return order;
     return a[1] - b[1];
   });
   return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
-  {
-    id: "id",
-    numeric: true,
-    disablePadding: false,
-    label: "ID",
-  },
-  {
-    id: "name",
-    numeric: false,
-    disablePadding: true,
-    label: "User Name",
-  },
-  {
-    id: "email",
-    numeric: false,
-    disablePadding: true,
-    label: "Email",
-  },
-  {
-    id: "age",
-    numeric: true,
-    disablePadding: false,
-    label: "Age",
-  },
-  {
-    id: "status",
-    numeric: false,
-    disablePadding: true,
-    label: "Status",
-  },
-  {
-    id: "action",
-    numeric: false,
-    disablePadding: false,
-    label: "Action",
-  },
-];
-
-function EnhancedTableHead(props) {
-  const { onSelectAllClick, order, orderBy, numSelected, rowCount, onRequestSort } =
-    props;
+function EnhancedTableHead({
+  columns,
+  onSelectAllClick,
+  order,
+  orderBy,
+  numSelected,
+  rowCount,
+  onRequestSort,
+}) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -126,34 +76,36 @@ function EnhancedTableHead(props) {
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all users",
-            }}
+            inputProps={{ "aria-label": "select all rows" }}
           />
         </TableCell>
-        {headCells.map((headCell) => (
+        {columns.map((headCell) => (
           <TableCell
             className="table-cell"
             key={headCell.id}
-            align={"left"}
-            padding={headCell.disablePadding ? "none" : "normal"}
+            align="left"
             sortDirection={orderBy === headCell.id ? order : false}
           >
-            <TableSortLabel
-              sx={{
-                color: orderBy === headCell.id ? "var(--accent) !important" : "inherit",
-              }}
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : "asc"}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
+            {headCell.disableSort ? (
+              headCell.label
+            ) : (
+              <TableSortLabel
+                sx={{
+                  color:
+                    orderBy === headCell.id ? "var(--accent) !important" : "inherit",
+                }}
+                active={orderBy === headCell.id}
+                direction={orderBy === headCell.id ? order : "asc"}
+                onClick={createSortHandler(headCell.id)}
+              >
+                {headCell.label}
+                {orderBy === headCell.id ? (
+                  <Box component="span" sx={visuallyHidden}>
+                    {order === "desc" ? "sorted descending" : "sorted ascending"}
+                  </Box>
+                ) : null}
+              </TableSortLabel>
+            )}
           </TableCell>
         ))}
       </TableRow>
@@ -162,6 +114,7 @@ function EnhancedTableHead(props) {
 }
 
 EnhancedTableHead.propTypes = {
+  columns: PropTypes.array.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
@@ -170,9 +123,13 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
-
+function EnhancedTableToolbar({
+  numSelected,
+  title,
+  newPath,
+  onDelete,
+  isDeleting,
+}) {
   return (
     <Toolbar
       sx={{
@@ -202,19 +159,19 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Users
+          {title}
         </Typography>
       )}
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
-          <IconButton>
+          <IconButton onClick={onDelete} disabled={isDeleting}>
             <DeleteOutline color="error" />
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Add user">
-          <Link to="/users/new" className="add-link">
+        <Tooltip title={`Add ${title.toLowerCase().slice(0, -1)}`}>
+          <Link to={newPath} className="add-link">
             <IconButton className="add-btn">
               <AddBoxOutlined />
             </IconButton>
@@ -227,16 +184,96 @@ function EnhancedTableToolbar(props) {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
+  title: PropTypes.string.isRequired,
+  newPath: PropTypes.string.isRequired,
+  onDelete: PropTypes.func.isRequired,
+  isDeleting: PropTypes.bool,
 };
 
-export default function DataTable() {
+function renderCell(column, row, resourcePath) {
+  switch (column.type) {
+    case "user":
+      return (
+        <div className="cell-user">
+          <img src={row.avatar} alt="" />
+          <div>
+            <span className="cell-primary">{row.name}</span>
+            <span className="cell-secondary">ID #{row.id}</span>
+          </div>
+        </div>
+      );
+    case "username":
+      return <span className="cell-chip">@{row.username}</span>;
+    case "email":
+      return <a className="cell-link" href={`mailto:${row.email}`}>{row.email}</a>;
+    case "address":
+      return (
+        <div className="cell-stack">
+          <span className="cell-primary">{row.street || "—"}</span>
+          <span className="cell-secondary">
+            {row.city}
+            {row.zipcode ? `, ${row.zipcode}` : ""}
+          </span>
+        </div>
+      );
+    case "product":
+      return (
+        <div className="cell-product">
+          <img src={row.image} alt="" />
+          <div>
+            <span className="cell-primary">{row.title}</span>
+            <span className="cell-secondary">{row.shortDescription}</span>
+          </div>
+        </div>
+      );
+    case "category":
+      return <span className="cell-chip">{row.category}</span>;
+    case "price":
+      return <span className="cell-price">${Number(row.price).toFixed(2)}</span>;
+    case "rating":
+      return (
+        <div className="cell-rating">
+          <span className="cell-primary">{Number(row.rating).toFixed(1)}</span>
+          <span className="cell-secondary">{row.reviews} reviews</span>
+        </div>
+      );
+    case "status":
+      return <span className={`status-badge ${row.status}`}>{row.status}</span>;
+    case "action":
+      return (
+        <Link
+          to={`${resourcePath}/${row.id}`}
+          className="btn-view"
+          onClick={(event) => event.stopPropagation()}
+        >
+          View
+        </Link>
+      );
+    default:
+      return row[column.id];
+  }
+}
+
+export default function DataTable({ resource = "users" }) {
+  const config = resourceConfig[resource];
+  const usersQuery = useGetUsersQuery(undefined, { skip: resource !== "users" });
+  const productsQuery = useGetProductsQuery(undefined, {
+    skip: resource !== "products",
+  });
+  const [deleteUser, { isLoading: isDeletingUser }] = useDeleteUserMutation();
+  const [deleteProduct, { isLoading: isDeletingProduct }] = useDeleteProductMutation();
+
+  const query = resource === "products" ? productsQuery : usersQuery;
+  const rows = useMemo(() => query.data ?? [], [query.data]);
+  const { isLoading, isError, error, isFetching } = query;
+
   const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("email");
+  const [orderBy, setOrderBy] = useState(config.orderBy);
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleRequestSort = (event, property) => {
+  const handleRequestSort = (_event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
@@ -244,14 +281,13 @@ export default function DataTable() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
-      setSelected(newSelected);
+      setSelected(rows.map((n) => n.id));
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, id) => {
+  const handleClick = (_event, id) => {
     const selectedIndex = selected.indexOf(id);
     let newSelected = [];
 
@@ -270,18 +306,20 @@ export default function DataTable() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+  const handleDelete = async () => {
+    try {
+      await Promise.all(
+        selected.map((id) =>
+          resource === "products" ? deleteProduct(id).unwrap() : deleteUser(id).unwrap()
+        )
+      );
+      setSelected([]);
+    } catch (err) {
+      console.error("Delete failed", err);
+    }
   };
 
   const isSelected = (id) => selected.indexOf(id) !== -1;
-
-  // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const visibleRows = useMemo(
@@ -290,16 +328,43 @@ export default function DataTable() {
         page * rowsPerPage,
         page * rowsPerPage + rowsPerPage
       ),
-    [order, orderBy, page, rowsPerPage]
+    [rows, order, orderBy, page, rowsPerPage]
   );
+
+  if (isLoading) {
+    return (
+      <Box className="datatable state-box">
+        <CircularProgress size={28} sx={{ color: "var(--accent)" }} />
+        <span>Loading {config.title.toLowerCase()}…</span>
+      </Box>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Box className="datatable state-box error">
+        Failed to load {config.title.toLowerCase()}: {error?.status ?? "network error"}
+      </Box>
+    );
+  }
 
   return (
     <Box className="datatable" sx={{ width: "100%" }}>
-      <Paper className="datatable-paper" sx={{ width: "100%", mb: 2, backgroundImage: "none" }}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+      <Paper
+        className="datatable-paper"
+        sx={{ width: "100%", mb: 2, backgroundImage: "none", opacity: isFetching ? 0.85 : 1 }}
+      >
+        <EnhancedTableToolbar
+          numSelected={selected.length}
+          title={config.title}
+          newPath={config.newPath}
+          onDelete={handleDelete}
+          isDeleting={isDeletingUser || isDeletingProduct}
+        />
         <TableContainer>
-          <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={"small"}>
+          <Table sx={{ minWidth: 980 }} aria-labelledby="tableTitle" size="small">
             <EnhancedTableHead
+              columns={config.columns}
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
@@ -328,55 +393,25 @@ export default function DataTable() {
                         color="primary"
                         sx={{ color: "var(--accent)" }}
                         checked={isItemSelected}
-                        inputProps={{
-                          "aria-labelledby": labelId,
-                        }}
+                        inputProps={{ "aria-labelledby": labelId }}
                       />
                     </TableCell>
-                    <TableCell
-                      className="table-cell"
-                      component="th"
-                      id={labelId}
-                      scope="row"
-                    >
-                      {row.id}
-                    </TableCell>
-                    <TableCell
-                      className="table-cell"
-                      id={labelId}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.name}
-                    </TableCell>
-                    <TableCell className="table-cell" scope="row" padding="none">
-                      {row.email}
-                    </TableCell>
-                    <TableCell className="table-cell" scope="row">
-                      {row.age}
-                    </TableCell>
-                    <TableCell className="table-cell" scope="row" padding="none">
-                      <span className={`status-badge ${row.status}`}>{row.status}</span>
-                    </TableCell>
-                    <TableCell
-                      className="table-cell cell-action"
-                      scope="row"
-                      padding="none"
-                    >
-                      <Link to={`/users/${row.id}`} className="btn-view">
-                        View
-                      </Link>
-                    </TableCell>
+                    {config.columns.map((column) => (
+                      <TableCell
+                        key={column.id}
+                        className={`table-cell${column.type === "action" ? " cell-action" : ""}`}
+                        id={column.id === "id" ? labelId : undefined}
+                        scope="row"
+                      >
+                        {renderCell(column, row, config.path)}
+                      </TableCell>
+                    ))}
                   </TableRow>
                 );
               })}
               {emptyRows > 0 && (
-                <TableRow
-                  style={{
-                    height: 30 * emptyRows,
-                  }}
-                >
-                  <TableCell colSpan={6} />
+                <TableRow style={{ height: 30 * emptyRows }}>
+                  <TableCell colSpan={config.columns.length + 1} />
                 </TableRow>
               )}
             </TableBody>
@@ -388,10 +423,17 @@ export default function DataTable() {
           count={rows.length}
           rowsPerPage={rowsPerPage}
           page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
+          onPageChange={(_event, newPage) => setPage(newPage)}
+          onRowsPerPageChange={(event) => {
+            setRowsPerPage(parseInt(event.target.value, 10));
+            setPage(0);
+          }}
         />
       </Paper>
     </Box>
   );
 }
+
+DataTable.propTypes = {
+  resource: PropTypes.oneOf(["users", "products"]),
+};

@@ -32,7 +32,7 @@ const Widget = ({ type }) => {
         title: "Orders",
         is_money: false,
         link: "See all orders",
-        href: "/orders",
+        href: "/",
         tone: "orders",
         icon: <ShoppingCartOutlined className="icon" />,
       };
@@ -42,7 +42,7 @@ const Widget = ({ type }) => {
         title: "Earnings",
         is_money: true,
         link: "View net earnings",
-        href: "/earnings",
+        href: "/",
         tone: "earnings",
         icon: <MonetizationOnOutlined className="icon" />,
       };

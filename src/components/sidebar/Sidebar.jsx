@@ -24,8 +24,8 @@ const sidebar = [
   {
     title: "User",
     list: [
-      { name: "Profile", link: "/profile", icon: <AccountCircleIcon className="icon" /> },
-      { name: "Logout", link: "/logout", icon: <LogoutIcon className="icon" /> },
+      { name: "Profile", link: "/", icon: <AccountCircleIcon className="icon" /> },
+      { name: "Logout", link: "/", icon: <LogoutIcon className="icon" /> },
     ],
   },
 ];
