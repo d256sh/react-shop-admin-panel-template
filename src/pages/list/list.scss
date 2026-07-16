@@ -1,8 +1,17 @@
 .list {
-    display: flex;
+  .page-intro {
+    padding: 12px 0 8px;
 
-    &_container {
-        flex: 4;
-
+    h1 {
+      font-size: 24px;
+      font-weight: 750;
+      letter-spacing: -0.03em;
     }
+
+    p {
+      margin-top: 4px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+  }
 }

@@ -8,23 +8,34 @@ import Table from "../../components/table/Table";
 
 const Home = () => {
   return (
-    <div className="home">
+    <div className="home page-shell">
       <Sidebar />
-      <div className="home_container">
+      <div className="home_container page-main">
         <Navbar />
-        <div className="widgets">
-          <Widget type="user" />
-          <Widget type="order" />
-          <Widget type="earning" />
-          <Widget type="balance" />
-        </div>
-        <div className="charts">
-          <Featured />
-          <Chart />
-        </div>
-        <div className="list_container">
-          <h3 className="title">Latest Transactions</h3>
-          <Table />
+        <div className="page-content">
+          <div className="page-intro">
+            <div>
+              <h1>Dashboard</h1>
+              <p>Overview of users, orders and revenue.</p>
+            </div>
+          </div>
+          <div className="widgets">
+            <Widget type="user" />
+            <Widget type="order" />
+            <Widget type="earning" />
+            <Widget type="balance" />
+          </div>
+          <div className="charts">
+            <Featured />
+            <Chart />
+          </div>
+          <div className="list_container">
+            <div className="section-head">
+              <h3 className="title">Latest Transactions</h3>
+              <span className="meta">Updated just now</span>
+            </div>
+            <Table />
+          </div>
         </div>
       </div>
     </div>

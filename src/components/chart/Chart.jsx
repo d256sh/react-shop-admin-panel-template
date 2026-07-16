@@ -8,60 +8,78 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-
 import { data } from "./statData.js";
 
 const color = {
-  users: "#ffc5a8",
-  orders: "#ffdfa8",
-  earnings: "#ccfbc0",
-  balance: "#c386ff",
-  total: "#1976d2",
+  users: "#38bdf8",
+  orders: "#fbbf24",
+  earnings: "#34d399",
+  balance: "#2dd4bf",
+  total: "#0f766e",
 };
 
-const Chart = () => {
+const Chart = ({ title = "Last 6 Months (Revenue)" }) => {
   return (
     <div className="chart box">
-      <span className="title">Last 6 Mouths (Revenue)</span>
-      <ResponsiveContainer width="100%" height={350}>
+      <div className="chart-header">
+        <span className="title">{title}</span>
+        <span className="hint">Performance overview</span>
+      </div>
+      <ResponsiveContainer width="100%" height={320}>
         <AreaChart
-          width={730}
-          height={250}
           data={data}
-          margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+          margin={{ top: 10, right: 12, left: 0, bottom: 0 }}
         >
           <defs>
             <linearGradient id="colorUsers" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="1%" stopColor={color.users} stopOpacity={0.5} />
-              <stop offset="65%" stopColor={color.users} stopOpacity={0} />
+              <stop offset="5%" stopColor={color.users} stopOpacity={0.35} />
+              <stop offset="95%" stopColor={color.users} stopOpacity={0} />
             </linearGradient>
             <linearGradient id="colorOrders" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="1%" stopColor={color.orders} stopOpacity={0.5} />
-              <stop offset="65%" stopColor={color.orders} stopOpacity={0} />
+              <stop offset="5%" stopColor={color.orders} stopOpacity={0.3} />
+              <stop offset="95%" stopColor={color.orders} stopOpacity={0} />
             </linearGradient>
             <linearGradient id="colorEarinings" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="1%" stopColor={color.earnings} stopOpacity={0.5} />
-              <stop offset="65%" stopColor={color.earnings} stopOpacity={0} />
+              <stop offset="5%" stopColor={color.earnings} stopOpacity={0.3} />
+              <stop offset="95%" stopColor={color.earnings} stopOpacity={0} />
             </linearGradient>
             <linearGradient id="colorBalance" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="1%" stopColor={color.balance} stopOpacity={0.5} />
-              <stop offset="65%" stopColor={color.balance} stopOpacity={0} />
+              <stop offset="5%" stopColor={color.balance} stopOpacity={0.3} />
+              <stop offset="95%" stopColor={color.balance} stopOpacity={0} />
             </linearGradient>
             <linearGradient id="colorTotal" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="1%" stopColor={color.total} stopOpacity={0.5} />
-              <stop offset="65%" stopColor={color.total} stopOpacity={0} />
+              <stop offset="5%" stopColor={color.total} stopOpacity={0.4} />
+              <stop offset="95%" stopColor={color.total} stopOpacity={0} />
             </linearGradient>
           </defs>
-          <XAxis dataKey="name" />
-          <YAxis />
-          <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
+          <XAxis
+            dataKey="name"
+            tick={{ fill: "#94a3b8", fontSize: 12 }}
+            axisLine={false}
+            tickLine={false}
+          />
+          <YAxis
+            tick={{ fill: "#94a3b8", fontSize: 12 }}
+            axisLine={false}
+            tickLine={false}
+          />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
+          <Tooltip
+            contentStyle={{
+              background: "var(--surface)",
+              border: "1px solid var(--border)",
+              borderRadius: 12,
+              boxShadow: "var(--shadow)",
+              color: "var(--text)",
+            }}
+          />
           <Area
             type="monotone"
             dataKey="users"
             stroke={color.users}
             fillOpacity={1}
             fill="url(#colorUsers)"
+            strokeWidth={2}
           />
           <Area
             type="monotone"
@@ -69,6 +87,7 @@ const Chart = () => {
             stroke={color.orders}
             fillOpacity={1}
             fill="url(#colorOrders)"
+            strokeWidth={2}
           />
           <Area
             type="monotone"
@@ -76,6 +95,7 @@ const Chart = () => {
             stroke={color.earnings}
             fillOpacity={1}
             fill="url(#colorEarinings)"
+            strokeWidth={2}
           />
           <Area
             type="monotone"
@@ -83,6 +103,7 @@ const Chart = () => {
             stroke={color.balance}
             fillOpacity={1}
             fill="url(#colorBalance)"
+            strokeWidth={2}
           />
           <Area
             type="monotone"
@@ -90,6 +111,7 @@ const Chart = () => {
             stroke={color.total}
             fillOpacity={1}
             fill="url(#colorTotal)"
+            strokeWidth={2.5}
           />
         </AreaChart>
       </ResponsiveContainer>

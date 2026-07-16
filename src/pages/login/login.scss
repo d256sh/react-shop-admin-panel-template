@@ -1,0 +1,204 @@
+.login {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  background: var(--bg);
+  font-family: var(--font);
+
+  .login-panel {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 48px clamp(24px, 6vw, 80px);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 36px;
+
+      .logo-mark {
+        width: 36px;
+        height: 36px;
+        border-radius: 10px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(145deg, #14b8a6, #0f766e);
+        color: #fff;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .logo {
+        font-weight: 750;
+        letter-spacing: -0.02em;
+      }
+    }
+
+    h1 {
+      font-size: 30px;
+      font-weight: 750;
+      letter-spacing: -0.03em;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      margin-bottom: 28px;
+      font-size: 14px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-width: 380px;
+
+      label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text-secondary);
+        margin-top: 8px;
+      }
+
+      input {
+        padding: 12px 14px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-xs);
+        background: var(--bg);
+        color: var(--text);
+        outline: none;
+
+        &:focus {
+          border-color: var(--accent);
+          box-shadow: 0 0 0 3px var(--accent-soft);
+        }
+      }
+
+      button {
+        margin-top: 18px;
+        padding: 13px 18px;
+        border: none;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #fff;
+        font-weight: 700;
+        cursor: pointer;
+
+        &:hover {
+          background: var(--accent-hover);
+        }
+      }
+    }
+
+    .footer {
+      margin-top: 24px;
+      font-size: 13px;
+      color: var(--text-muted);
+
+      a {
+        color: var(--accent);
+        font-weight: 700;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .login-visual {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(45, 212, 191, 0.22), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(14, 165, 233, 0.18), transparent 35%),
+      linear-gradient(160deg, #0b1220 0%, #111827 55%, #0f766e 140%);
+    color: #f8fafc;
+    display: flex;
+    align-items: flex-end;
+    padding: 48px;
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(2px);
+      animation: float 8s ease-in-out infinite;
+    }
+
+    .orb-a {
+      width: 220px;
+      height: 220px;
+      top: 12%;
+      right: 18%;
+      background: rgba(45, 212, 191, 0.25);
+    }
+
+    .orb-b {
+      width: 160px;
+      height: 160px;
+      bottom: 28%;
+      left: 12%;
+      background: rgba(56, 189, 248, 0.2);
+      animation-delay: -3s;
+    }
+
+    .copy {
+      position: relative;
+      z-index: 1;
+      max-width: 420px;
+
+      .eyebrow {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #5eead4;
+        margin-bottom: 12px;
+      }
+
+      h2 {
+        font-size: 34px;
+        font-weight: 750;
+        letter-spacing: -0.03em;
+        line-height: 1.15;
+        margin-bottom: 12px;
+      }
+
+      p:last-child {
+        color: #94a3b8;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+    }
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-18px);
+  }
+}
+
+@media (max-width: 900px) {
+  .login {
+    grid-template-columns: 1fr;
+
+    .login-visual {
+      min-height: 240px;
+      padding: 28px;
+      order: -1;
+
+      h2 {
+        font-size: 24px !important;
+      }
+    }
+  }
+}

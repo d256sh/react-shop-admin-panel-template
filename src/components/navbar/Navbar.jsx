@@ -14,44 +14,53 @@ const Navbar = () => {
   const { darkMode, dispatch } = useContext(DarkModeContext);
 
   return (
-    <div className="navbar">
+    <header className="navbar">
       <div className="wrapper">
         <div className="search">
-          <input type="text" placeholder="Search..." />
           <SearchOutlined className="icon" />
+          <input type="text" placeholder="Search users, orders..." />
+          <kbd>⌘K</kbd>
         </div>
         <div className="items">
           <button
             type="button"
             className="item btn-toggle"
+            aria-label="Toggle theme"
             onClick={() => dispatch({ type: "TOGGLE" })}
           >
             {darkMode ? (
-              <LightModeOutlined style={{ color: "white" }} className="icon" />
+              <LightModeOutlined className="icon" />
             ) : (
               <DarkModeOutlined className="icon" />
             )}
           </button>
-          <div className="item lang">
-            <LanguageOutlined className="icon lang_icon" />
+          <button type="button" className="item lang" aria-label="Language">
+            <LanguageOutlined className="icon" />
             <span className="lang_title">EN</span>
-          </div>
-          <div className="item">
+          </button>
+          <button type="button" className="item" aria-label="Notifications">
             <NotificationsNoneOutlined className="icon" />
-            <div className="counter">13</div>
-          </div>
-          <div className="item">
+            <span className="counter">3</span>
+          </button>
+          <button type="button" className="item" aria-label="Messages">
             <ChatBubbleOutline className="icon" />
-            <div className="counter">13</div>
-          </div>
-          <div className="item">
+            <span className="counter">2</span>
+          </button>
+          <div className="item profile">
             <div className="avatar">
-              <img src="" alt="" />
+              <img
+                src="https://i.pravatar.cc/80?img=12"
+                alt="Admin"
+              />
+            </div>
+            <div className="profile-meta">
+              <span className="name">Admin</span>
+              <span className="role">Manager</span>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 };
 

@@ -6,48 +6,61 @@ import "./single.scss";
 
 const Single = () => {
   return (
-    <div className="single">
+    <div className="single page-shell">
       <Sidebar />
-      <div className="single_container">
+      <div className="single_container page-main">
         <Navbar />
-        <div className="top">
-          <div className="left">
-            <h1 className="title">Information</h1>
-            <div className="item">
-              <button className="btn-edit">Edit</button>
-              <img
-                className="item_image"
-                src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.beckonmedia.com.au%2Fwp-content%2Fuploads%2F2018%2F07%2FProfessional-Portrait-Photography-17.jpg&f=1&nofb=1&ipt=fa9823f4b981ac4c304fb8b1e9ecf36e40cd4797c7d162a8be87caf8bfe49ab9&ipo=images"
-                alt=""
-              />
-              <div className="details">
-                <h3 className="details_title">Hanna Wats</h3>
-                <div className="detail">
-                  <span className="item_key">Email</span>
-                  <span className="item_value">da@gmail.com</span>
-                </div>
-                <div className="detail">
-                  <span className="item_key">Phone</span>
-                  <span className="item_value">+380 73 199 89 26</span>
-                </div>
-                <div className="detail">
-                  <span className="item_key">Age</span>
-                  <span className="item_value">22</span>
-                </div>
-                <div className="detail">
-                  <span className="item_key">Status</span>
-                  <span className="item_value">Active</span>
+        <div className="page-content">
+          <div className="page-intro">
+            <h1>User details</h1>
+            <p>Profile information and recent activity.</p>
+          </div>
+          <div className="top">
+            <div className="left box">
+              <div className="section-head">
+                <h2 className="title">Information</h2>
+                <button className="btn-edit" type="button">
+                  Edit
+                </button>
+              </div>
+              <div className="item">
+                <img
+                  className="item_image"
+                  src="https://i.pravatar.cc/160?img=32"
+                  alt="Hanna Watts"
+                />
+                <div className="details">
+                  <h3 className="details_title">Hanna Watts</h3>
+                  <span className="status-badge active">Active</span>
+                  <div className="detail">
+                    <span className="item_key">Email</span>
+                    <span className="item_value">da@gmail.com</span>
+                  </div>
+                  <div className="detail">
+                    <span className="item_key">Phone</span>
+                    <span className="item_value">+380 73 199 89 26</span>
+                  </div>
+                  <div className="detail">
+                    <span className="item_key">Age</span>
+                    <span className="item_value">22</span>
+                  </div>
+                  <div className="detail">
+                    <span className="item_key">Country</span>
+                    <span className="item_value">Ukraine</span>
+                  </div>
                 </div>
               </div>
             </div>
+            <div className="right">
+              <Chart title="User Spending (Last 6 Months)" />
+            </div>
           </div>
-          <div className="right">
-            <Chart />
+          <div className="bottom">
+            <div className="section-head">
+              <h3 className="title">Last Transactions</h3>
+            </div>
+            <Table />
           </div>
-        </div>
-        <div className="bottom">
-          <h3 className="title">Last Transactions</h3>
-          <Table />
         </div>
       </div>
     </div>

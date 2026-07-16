@@ -1,46 +1,47 @@
-import { KeyboardArrowUp, MoreVertOutlined } from "@mui/icons-material";
+import { KeyboardArrowDown, KeyboardArrowUp, MoreVertOutlined } from "@mui/icons-material";
 import "./featured.scss";
-
 import CircularProgressWithLabel from "../CircularWithValueLabel";
 
 const Featured = () => {
-  const value = 10;
+  const value = 70;
 
   return (
     <div className="featured box">
       <div className="top">
-        <h1 className="title">Total Revenue</h1>
-        <MoreVertOutlined fontSize="small" />
+        <h2 className="title">Total Revenue</h2>
+        <button type="button" className="more" aria-label="More options">
+          <MoreVertOutlined fontSize="small" />
+        </button>
       </div>
       <div className="bottom">
         <div className="featured-chart">
           <CircularProgressWithLabel value={value} />
         </div>
-        <p className="title">Total sales today</p>
+        <p className="subtitle">Total sales today</p>
         <p className="amount">$420</p>
         <p className="desc">
-          Previos transactions procesing. last payment may not be includeed.
+          Previous transactions are processing. Last payment may not be included.
         </p>
         <div className="summary">
           <div className="item">
-            <div className="title">Target</div>
+            <div className="label">Target</div>
             <div className="result positive">
               <KeyboardArrowUp className="arrow" fontSize="small" />
-              <span className="amount">$12.4k</span>
+              <span className="value">$12.4k</span>
             </div>
           </div>
           <div className="item">
-            <div className="title">last Week</div>
+            <div className="label">Last Week</div>
             <div className="result negative">
-              <KeyboardArrowUp className="arrow" fontSize="small" />
-              <span className="amount">$12.4k</span>
+              <KeyboardArrowDown className="arrow" fontSize="small" />
+              <span className="value">$12.4k</span>
             </div>
           </div>
           <div className="item">
-            <div className="title">Last Mouth</div>
+            <div className="label">Last Month</div>
             <div className="result positive">
               <KeyboardArrowUp className="arrow" fontSize="small" />
-              <span className="amount">$12.4k</span>
+              <span className="value">$12.4k</span>
             </div>
           </div>
         </div>

@@ -1,38 +1,58 @@
 .datatable {
-    padding: 10px;
+  padding: 8px 0 0;
 
-    .cell-status {
-        &.active {
-            color: rgb(0, 155, 96);
-        }
+  .MuiPaper-root {
+    background: var(--surface) !important;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm) !important;
+    border-radius: var(--radius) !important;
+    overflow: hidden;
+  }
 
-        &.inactive {
-            color: brown;
-        }
+  .MuiToolbar-root,
+  .MuiTablePagination-root {
+    color: var(--text);
+  }
 
-        &.pending {
-            color: orange;
-        }
+  .table-cell {
+    border-color: var(--border) !important;
+    color: var(--text) !important;
+    font-family: var(--font) !important;
+  }
+
+  .MuiTableSortLabel-icon {
+    fill: var(--accent);
+  }
+
+  .add-link {
+    text-decoration: none;
+  }
+
+  .add-btn {
+    color: var(--accent) !important;
+  }
+
+  .cell-action {
+    display: flex;
+    gap: 4px;
+    padding: 6px;
+  }
+
+  .btn-view {
+    padding: 5px 12px;
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid var(--accent-soft);
+    background: var(--accent-soft);
+    border-radius: 999px;
+    transition: background var(--transition), color var(--transition);
+
+    &:hover {
+      background: var(--accent);
+      color: #fff;
+      border-color: var(--accent);
     }
-
-    .cell-action {
-        display: flex;
-        gap: 4px;
-        padding: 6px;
-    }
-
-    .MuiTableSortLabel-icon {
-        fill: orange;
-    }
-
-    input[type=checkbox] {
-        color: "orange"
-    }
-
-    .btn-view {
-        padding: 2px 6px;
-        color: aquamarine;
-        text-decoration: underline;
-        margin-inline: 8px;
-    }
+  }
 }

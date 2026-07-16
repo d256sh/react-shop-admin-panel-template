@@ -1,17 +1,31 @@
 import * as React from "react";
 import PropTypes from "prop-types";
 import CircularProgress from "@mui/material/CircularProgress";
-import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 
 function CircularProgressWithLabel(props) {
   return (
     <Box sx={{ position: "relative", display: "inline-flex" }}>
       <CircularProgress
-        color="warning"
-        size={170}
+        variant="determinate"
+        value={100}
+        size={160}
+        thickness={3.5}
+        sx={{ color: "var(--border)" }}
+      />
+      <CircularProgress
         variant="determinate"
         value={props.value}
+        size={160}
+        thickness={3.5}
+        sx={{
+          color: "var(--accent)",
+          position: "absolute",
+          left: 0,
+          [`& .MuiCircularProgress-circle`]: {
+            strokeLinecap: "round",
+          },
+        }}
       />
       <Box
         sx={{
@@ -21,13 +35,28 @@ function CircularProgressWithLabel(props) {
           right: 0,
           position: "absolute",
           display: "flex",
+          flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <Typography variant="caption" component="div" color="text.secondary">
+        <Box
+          component="span"
+          sx={{
+            fontSize: 28,
+            fontWeight: 750,
+            letterSpacing: "-0.03em",
+            color: "var(--text)",
+          }}
+        >
           {`${Math.round(props.value)}%`}
-        </Typography>
+        </Box>
+        <Box
+          component="span"
+          sx={{ fontSize: 12, color: "var(--text-muted)", fontWeight: 600 }}
+        >
+          of target
+        </Box>
       </Box>
     </Box>
   );

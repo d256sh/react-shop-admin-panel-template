@@ -1,20 +1,17 @@
 import "./sidebar.scss";
-import React from "react";
 import SpaceDashboardIcon from "@mui/icons-material/SpaceDashboard";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
-import WindowIcon from "@mui/icons-material/Window";import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
+import WindowIcon from "@mui/icons-material/Window";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
-
-import { stat } from "../../static";
-
 import { NavLink } from "react-router-dom";
+import { stat } from "../../static";
 
 const sidebar = [
   {
     title: "Main",
     list: [
-      { name: "Dashbourd", link: "/", icon: <SpaceDashboardIcon className="icon" /> },
+      { name: "Dashboard", link: "/", icon: <SpaceDashboardIcon className="icon" /> },
     ],
   },
   {
@@ -35,29 +32,39 @@ const sidebar = [
 
 const Sidebar = () => {
   return (
-    <div className="sidebar">
+    <aside className="sidebar">
       <header>
+        <span className="logo-mark">DA</span>
         <span className="logo">{stat.site_name}</span>
       </header>
-      <hr />
-      <div className="center">
+
+      <nav className="center">
         <ul>
           {sidebar.map(({ title, list }) => (
-            <li key={title}>
+            <li key={title} className="nav-group">
               <span className="title">{title}</span>
               <ul>
                 {list.map(({ name, icon, link }) => (
                   <li key={name}>
-                    {icon}
-                    <NavLink to={link}>{name}</NavLink>
+                    <NavLink to={link} end={link === "/"} className="nav-link">
+                      {icon}
+                      <span>{name}</span>
+                    </NavLink>
                   </li>
                 ))}
               </ul>
             </li>
           ))}
         </ul>
-      </div>
-    </div>
+      </nav>
+
+      <footer className="sidebar-footer">
+        <div className="footer-card">
+          <p className="footer-title">Need help?</p>
+          <p className="footer-text">Check docs & shortcuts</p>
+        </div>
+      </footer>
+    </aside>
   );
 };
 

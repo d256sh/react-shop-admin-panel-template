@@ -121,13 +121,13 @@ function EnhancedTableHead(props) {
       <TableRow>
         <TableCell className="table-cell" padding="checkbox">
           <Checkbox
-            style={{ color: "orange" }}
-            color="warning"
+            color="primary"
+            sx={{ color: "var(--accent)" }}
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
             onChange={onSelectAllClick}
             inputProps={{
-              "aria-label": "select all desserts",
+              "aria-label": "select all users",
             }}
           />
         </TableCell>
@@ -140,8 +140,8 @@ function EnhancedTableHead(props) {
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
-              style={{
-                color: orderBy === headCell.id ? "orange" : "inherit",
+              sx={{
+                color: orderBy === headCell.id ? "var(--accent) !important" : "inherit",
               }}
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
@@ -180,14 +180,14 @@ function EnhancedTableToolbar(props) {
         pr: { xs: 1, sm: 1 },
         ...(numSelected > 0 && {
           bgcolor: (theme) =>
-            alpha(theme.palette.warning.main, theme.palette.action.activatedOpacity),
+            alpha(theme.palette.success.main, theme.palette.action.activatedOpacity),
         }),
       }}
     >
       {numSelected > 0 ? (
         <Typography
           className="typography"
-          sx={{ flex: "1 1 100%" }}
+          sx={{ flex: "1 1 100%", fontWeight: 650 }}
           color="inherit"
           variant="subtitle1"
           component="div"
@@ -197,7 +197,7 @@ function EnhancedTableToolbar(props) {
       ) : (
         <Typography
           className="typography"
-          sx={{ flex: "1 1 100%" }}
+          sx={{ flex: "1 1 100%", fontWeight: 700, letterSpacing: "-0.02em" }}
           variant="h6"
           id="tableTitle"
           component="div"
@@ -213,10 +213,10 @@ function EnhancedTableToolbar(props) {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Add">
-          <Link to="/users/new">
-            <IconButton>
-              <AddBoxOutlined color="info" />
+        <Tooltip title="Add user">
+          <Link to="/users/new" className="add-link">
+            <IconButton className="add-btn">
+              <AddBoxOutlined />
             </IconButton>
           </Link>
         </Tooltip>
@@ -295,7 +295,7 @@ export default function DataTable() {
 
   return (
     <Box className="datatable" sx={{ width: "100%" }}>
-      <Paper className="box" sx={{ width: "100%", mb: 2 }}>
+      <Paper className="datatable-paper" sx={{ width: "100%", mb: 2, backgroundImage: "none" }}>
         <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby="tableTitle" size={"small"}>
@@ -325,8 +325,8 @@ export default function DataTable() {
                   >
                     <TableCell className="table-cell" padding="checkbox">
                       <Checkbox
-                        style={{ color: "orange" }}
-                        color="warning"
+                        color="primary"
+                        sx={{ color: "var(--accent)" }}
                         checked={isItemSelected}
                         inputProps={{
                           "aria-labelledby": labelId,
@@ -355,12 +355,8 @@ export default function DataTable() {
                     <TableCell className="table-cell" scope="row">
                       {row.age}
                     </TableCell>
-                    <TableCell
-                      className={`cell-status ${row.status}`}
-                      scope="row"
-                      padding="none"
-                    >
-                      {row.status}
+                    <TableCell className="table-cell" scope="row" padding="none">
+                      <span className={`status-badge ${row.status}`}>{row.status}</span>
                     </TableCell>
                     <TableCell
                       className="table-cell cell-action"

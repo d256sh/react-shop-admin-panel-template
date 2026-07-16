@@ -1,41 +1,134 @@
+:root {
+  --font: "Plus Jakarta Sans", system-ui, sans-serif;
+  --bg: #f0f3f8;
+  --bg-soft: #e8edf5;
+  --surface: #ffffff;
+  --surface-elevated: #ffffff;
+  --border: #e2e8f0;
+  --border-strong: #cbd5e1;
+  --text: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --accent: #0f766e;
+  --accent-soft: #ccfbf1;
+  --accent-hover: #0d9488;
+  --accent-contrast: #ffffff;
+  --success: #059669;
+  --success-soft: #d1fae5;
+  --warning: #d97706;
+  --warning-soft: #fef3c7;
+  --danger: #dc2626;
+  --danger-soft: #fee2e2;
+  --info: #0284c8;
+  --info-soft: #e0f2fe;
+  --sidebar-bg: #0b1220;
+  --sidebar-text: #94a3b8;
+  --sidebar-text-active: #f8fafc;
+  --sidebar-hover: rgba(255, 255, 255, 0.06);
+  --sidebar-active: rgba(15, 118, 110, 0.28);
+  --sidebar-border: rgba(255, 255, 255, 0.06);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 12px 32px rgba(15, 23, 42, 0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-xs: 8px;
+  --sidebar-width: 260px;
+  --navbar-height: 64px;
+  --transition: 0.18s ease;
+}
+
 .app {
-  font-family: "Montserrat", sans-serif;
+  font-family: var(--font);
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
-  background-color: #f1f1f1;
-  color: #131313;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 
   a {
-    color: #131313;
+    color: inherit;
+  }
+
+  &.dark {
+    --bg: #070b14;
+    --bg-soft: #0f1623;
+    --surface: #111827;
+    --surface-elevated: #1a2332;
+    --border: #1e293b;
+    --border-strong: #334155;
+    --text: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent-soft: rgba(15, 118, 110, 0.22);
+    --success-soft: rgba(5, 150, 105, 0.18);
+    --warning-soft: rgba(217, 119, 6, 0.18);
+    --danger-soft: rgba(220, 38, 38, 0.18);
+    --info-soft: rgba(2, 132, 200, 0.18);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+    --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+    --sidebar-bg: #05080f;
   }
 }
-
-.dark {
-  background-color: #131313;
-  color: #f1f1f1;
-
-  .box {
-    background-color: #0e0e0e;
-  }
-
-  .table-cell,
-  .typography,
-  a {
-    color: #f1f1f1;
-  }
-
-}
-
-// reuse
 
 .box {
-  box-shadow: 2px 4px 10px 1px rgba(71, 71, 71, 0.186);
-  background-color: #fff;
-  padding: 10px;
-  border-radius: 7px;
-  -webkit-border-radius: 7px;
-  -moz-border-radius: 7px;
-  -ms-border-radius: 7px;
-  -o-border-radius: 7px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+  padding: 20px;
+  border-radius: var(--radius);
+  transition: box-shadow var(--transition), border-color var(--transition);
+
+  &:hover {
+    box-shadow: var(--shadow);
+  }
+}
+
+.page-shell {
+  display: flex;
+  min-height: 100vh;
+}
+
+.page-main {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.page-content {
+  flex: 1;
+  padding: 8px 24px 28px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+
+  &.active,
+  &.Approved {
+    color: var(--success);
+    background: var(--success-soft);
+  }
+
+  &.inactive {
+    color: var(--danger);
+    background: var(--danger-soft);
+  }
+
+  &.pending,
+  &.Pending {
+    color: var(--warning);
+    background: var(--warning-soft);
+  }
 }

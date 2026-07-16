@@ -1,10 +1,12 @@
 import {
   AccountBalanceWalletOutlined,
+  KeyboardArrowDownRounded,
   KeyboardArrowUpRounded,
   MonetizationOnOutlined,
   PersonOutline,
   ShoppingCartOutlined,
 } from "@mui/icons-material";
+import { Link } from "react-router-dom";
 import "./widget.scss";
 
 const Widget = ({ type }) => {
@@ -12,86 +14,75 @@ const Widget = ({ type }) => {
 
   const amount = 100;
   const diff = 20;
+  const isPositive = true;
 
   switch (type) {
     case "user":
       data = {
-        title: "USERS",
+        title: "Users",
         is_money: false,
-        link: `See all users`,
+        link: "See all users",
         href: "/users",
-        icon: (
-          <PersonOutline
-            className="icon"
-            style={{ backgroundColor: "#ffc5a8", color: "#ff5e00" }}
-          />
-        ),
+        tone: "users",
+        icon: <PersonOutline className="icon" />,
       };
       break;
     case "order":
       data = {
-        title: "ORDERS",
+        title: "Orders",
         is_money: false,
-        link: `See all orders`,
+        link: "See all orders",
         href: "/orders",
-        icon: (
-          <ShoppingCartOutlined
-            className="icon"
-            style={{ backgroundColor: "#ffdfa8", color: "#ffb300" }}
-          />
-        ),
+        tone: "orders",
+        icon: <ShoppingCartOutlined className="icon" />,
       };
       break;
     case "earning":
       data = {
-        title: "EARNINGS",
+        title: "Earnings",
         is_money: true,
-        link: `View net earnings`,
+        link: "View net earnings",
         href: "/earnings",
-        icon: (
-          <MonetizationOnOutlined
-            className="icon"
-            style={{ backgroundColor: "#bbffaa", color: "#31f700" }}
-          />
-        ),
+        tone: "earnings",
+        icon: <MonetizationOnOutlined className="icon" />,
       };
       break;
     case "balance":
       data = {
-        title: "BALANCE",
+        title: "Balance",
         is_money: true,
-        link: `See details`,
+        link: "See details",
         href: "/",
-        icon: (
-          <AccountBalanceWalletOutlined
-            className="icon"
-            style={{ backgroundColor: "#d4a8ff", color: "#8000ff" }}
-          />
-        ),
+        tone: "balance",
+        icon: <AccountBalanceWalletOutlined className="icon" />,
       };
       break;
-
     default:
       break;
   }
 
   return (
-    <div className="widget box">
+    <div className={`widget box tone-${data.tone}`}>
       <div className="left">
         <span className="title">{data.title}</span>
         <span className="counter">
-          {data.is_money && "$"} {amount}
+          {data.is_money && "$"}
+          {amount.toLocaleString()}
         </span>
-        <a href={data.href} className="link">
+        <Link to={data.href} className="link">
           {data.link}
-        </a>
+        </Link>
       </div>
       <div className="right">
-        <div className="percentage positive negative">
-          <KeyboardArrowUpRounded className="arrow" />
-          <span>{diff} %</span>
+        <div className={`percentage ${isPositive ? "positive" : "negative"}`}>
+          {isPositive ? (
+            <KeyboardArrowUpRounded className="arrow" />
+          ) : (
+            <KeyboardArrowDownRounded className="arrow" />
+          )}
+          <span>{diff}%</span>
         </div>
-        {data.icon}
+        <div className="icon-wrap">{data.icon}</div>
       </div>
     </div>
   );

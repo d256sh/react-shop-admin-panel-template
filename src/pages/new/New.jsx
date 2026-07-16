@@ -6,52 +6,64 @@ import { useState } from "react";
 
 const New = () => {
   const [file, setFile] = useState(
-    "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fmedia.istockphoto.com%2Fvectors%2Fno-image-available-sign-vector-id1138179183%3Fk%3D6%26m%3D1138179183%26s%3D612x612%26w%3D0%26h%3DprMYPP9mLRNpTp3XIykjeJJ8oCZRhb2iez6vKs8a8eE%3D&f=1&nofb=1&ipt=df65efa38831722b156ee8540a1ec1421827bb7db622b8a4093d34e15bfa3dfb&ipo=images"
+    "https://i.pravatar.cc/200?img=5"
   );
 
   return (
-    <div className="new">
+    <div className="new page-shell">
       <Sidebar />
-      <div className="new_container">
+      <div className="new_container page-main">
         <Navbar />
-        <div className="top box">
-          <h1>Add New User</h1>
-        </div>
-        <div className="bottom box">
-          <div className="left">
-            <img src={file} alt="avatar" />
+        <div className="page-content">
+          <div className="page-intro">
+            <h1>Add New User</h1>
+            <p>Create a profile and upload an avatar.</p>
           </div>
-          <div className="right">
-            <form>
-              <div className="form-input">
-                <label className="image-upload" htmlFor="img">
-                  <DriveFolderUploadOutlined className="icon" />
-                </label>
-                <input
-                  onChange={(e) => setFile(URL.createObjectURL(e.target.files[0]))}
-                  name="img"
-                  id="img"
-                  type="file"
-                />
+          <div className="bottom box">
+            <div className="left">
+              <div className="avatar-preview">
+                <img src={file} alt="avatar" />
               </div>
-              <div className="form-input">
-                <label htmlFor="name">Username</label>
-                <input id="name" type="text" />
-              </div>
-              <div className="form-input">
-                <label htmlFor="email">Email</label>
-                <input id="email" type="email" />
-              </div>
-              <div className="form-input">
-                <label htmlFor="phone">Phone</label>
-                <input id="phone" type="text" />
-              </div>
-              <div className="form-input">
-                <label htmlFor="age">age</label>
-                <input id="age" type="number" />
-              </div>
-              <button type="button">Create</button>
-            </form>
+              <p className="hint">Profile photo preview</p>
+            </div>
+            <div className="right">
+              <form>
+                <div className="form-input upload">
+                  <label className="image-upload" htmlFor="img">
+                    <DriveFolderUploadOutlined className="icon" />
+                    <span>Upload image</span>
+                  </label>
+                  <input
+                    onChange={(e) => setFile(URL.createObjectURL(e.target.files[0]))}
+                    name="img"
+                    id="img"
+                    type="file"
+                    accept="image/*"
+                  />
+                </div>
+                <div className="form-grid">
+                  <div className="form-input">
+                    <label htmlFor="name">Username</label>
+                    <input id="name" type="text" placeholder="hanna_watts" />
+                  </div>
+                  <div className="form-input">
+                    <label htmlFor="email">Email</label>
+                    <input id="email" type="email" placeholder="da@gmail.com" />
+                  </div>
+                  <div className="form-input">
+                    <label htmlFor="phone">Phone</label>
+                    <input id="phone" type="text" placeholder="+380 ..." />
+                  </div>
+                  <div className="form-input">
+                    <label htmlFor="age">Age</label>
+                    <input id="age" type="number" placeholder="22" />
+                  </div>
+                </div>
+                <button type="button" className="btn-create">
+                  Create user
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
