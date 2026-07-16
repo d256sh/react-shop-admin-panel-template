@@ -41,17 +41,12 @@ export const mapUser = (user) => {
   return {
     id: user.id,
     name: `${firstName} ${lastName}`.trim() || username,
-    firstName,
-    lastName,
     username,
     email,
     phone,
     city,
     zipcode,
     street: [number, street].filter(Boolean).join(" "),
-    address: [street && `${number} ${street}`.trim(), city, zipcode]
-      .filter(Boolean)
-      .join(", "),
     avatar: override?.avatar ?? `https://i.pravatar.cc/80?u=${email || user.id}`,
     status: getUserStatus(user.id),
   };
@@ -134,5 +129,8 @@ export const fakeStoreService = {
   deleteProduct: async (id) => {
     await request(`/products/${id}`, { method: "DELETE" });
     return id;
+  },
+  fetchCarts: async () => {
+    return request("/carts");
   },
 };

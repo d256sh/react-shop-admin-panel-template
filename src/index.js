@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 import "./index.css";
 import App from "./App";
-import reportWebVitals from "./reportWebVitals";
 import { DarkModeProvider } from "./context/darkModeContext";
 import { store } from "./store";
 
@@ -17,5 +16,3 @@ root.render(
     </Provider>
   </React.StrictMode>
 );
-
-reportWebVitals();

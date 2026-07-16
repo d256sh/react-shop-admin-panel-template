@@ -8,7 +8,8 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { data } from "./statData.js";
+import { useSelector } from "react-redux";
+import { selectDashboardChart } from "../../store/dashboardSlice";
 
 const color = {
   users: "#38bdf8",
@@ -19,15 +20,17 @@ const color = {
 };
 
 const Chart = ({ title = "Last 6 Months (Revenue)" }) => {
+  const chartData = useSelector(selectDashboardChart);
+
   return (
     <div className="chart box">
       <div className="chart-header">
         <span className="title">{title}</span>
-        <span className="hint">Performance overview</span>
+        <span className="hint">From dashboard store</span>
       </div>
       <ResponsiveContainer width="100%" height={320}>
         <AreaChart
-          data={data}
+          data={chartData}
           margin={{ top: 10, right: 12, left: 0, bottom: 0 }}
         >
           <defs>
@@ -39,7 +42,7 @@ const Chart = ({ title = "Last 6 Months (Revenue)" }) => {
               <stop offset="5%" stopColor={color.orders} stopOpacity={0.3} />
               <stop offset="95%" stopColor={color.orders} stopOpacity={0} />
             </linearGradient>
-            <linearGradient id="colorEarinings" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id="colorEarnings" x1="0" y1="0" x2="0" y2="1">
               <stop offset="5%" stopColor={color.earnings} stopOpacity={0.3} />
               <stop offset="95%" stopColor={color.earnings} stopOpacity={0} />
             </linearGradient>
@@ -91,10 +94,10 @@ const Chart = ({ title = "Last 6 Months (Revenue)" }) => {
           />
           <Area
             type="monotone"
-            dataKey="earinings"
+            dataKey="earnings"
             stroke={color.earnings}
             fillOpacity={1}
-            fill="url(#colorEarinings)"
+            fill="url(#colorEarnings)"
             strokeWidth={2}
           />
           <Area

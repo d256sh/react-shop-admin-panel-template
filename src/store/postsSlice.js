@@ -46,9 +46,6 @@ const postsSlice = createSlice({
       state.currentStatus = "idle";
       state.commentsStatus = "idle";
     },
-    resetPostsError(state) {
-      state.error = null;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -112,7 +109,7 @@ const postsSlice = createSlice({
   },
 });
 
-export const { clearCurrentPost, resetPostsError } = postsSlice.actions;
+export const { clearCurrentPost } = postsSlice.actions;
 
 export const selectPosts = (state) => state.posts.items;
 export const selectPostsStatus = (state) => state.posts.status;

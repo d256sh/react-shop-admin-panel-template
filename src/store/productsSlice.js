@@ -41,9 +41,6 @@ const productsSlice = createSlice({
       state.current = null;
       state.currentStatus = "idle";
     },
-    resetProductsError(state) {
-      state.error = null;
-    },
   },
   extraReducers: (builder) => {
     builder
@@ -102,7 +99,7 @@ const productsSlice = createSlice({
   },
 });
 
-export const { clearCurrentProduct, resetProductsError } = productsSlice.actions;
+export const { clearCurrentProduct } = productsSlice.actions;
 
 export const selectProducts = (state) => state.products.items;
 export const selectProductsStatus = (state) => state.products.status;

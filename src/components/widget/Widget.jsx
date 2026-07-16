@@ -7,70 +7,61 @@ import {
   ShoppingCartOutlined,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import "./widget.scss";
+import { selectDashboardWidgets } from "../../store/dashboardSlice";
+
+const metaByType = {
+  user: {
+    title: "Users",
+    link: "See all users",
+    href: "/users",
+    tone: "users",
+    icon: <PersonOutline className="icon" />,
+  },
+  order: {
+    title: "Orders",
+    link: "See all orders",
+    href: "/",
+    tone: "orders",
+    icon: <ShoppingCartOutlined className="icon" />,
+  },
+  earning: {
+    title: "Earnings",
+    link: "View net earnings",
+    href: "/",
+    tone: "earnings",
+    icon: <MonetizationOnOutlined className="icon" />,
+  },
+  balance: {
+    title: "Balance",
+    link: "See details",
+    href: "/",
+    tone: "balance",
+    icon: <AccountBalanceWalletOutlined className="icon" />,
+  },
+};
 
 const Widget = ({ type }) => {
-  let data;
+  const widgets = useSelector(selectDashboardWidgets);
+  const stats = widgets[type];
+  const meta = metaByType[type];
 
-  const amount = 100;
-  const diff = 20;
-  const isPositive = true;
+  if (!meta || !stats) return null;
 
-  switch (type) {
-    case "user":
-      data = {
-        title: "Users",
-        is_money: false,
-        link: "See all users",
-        href: "/users",
-        tone: "users",
-        icon: <PersonOutline className="icon" />,
-      };
-      break;
-    case "order":
-      data = {
-        title: "Orders",
-        is_money: false,
-        link: "See all orders",
-        href: "/",
-        tone: "orders",
-        icon: <ShoppingCartOutlined className="icon" />,
-      };
-      break;
-    case "earning":
-      data = {
-        title: "Earnings",
-        is_money: true,
-        link: "View net earnings",
-        href: "/",
-        tone: "earnings",
-        icon: <MonetizationOnOutlined className="icon" />,
-      };
-      break;
-    case "balance":
-      data = {
-        title: "Balance",
-        is_money: true,
-        link: "See details",
-        href: "/",
-        tone: "balance",
-        icon: <AccountBalanceWalletOutlined className="icon" />,
-      };
-      break;
-    default:
-      break;
-  }
+  const isMoney = Boolean(stats.isMoney);
+  const isPositive = Boolean(stats.isPositive);
 
   return (
-    <div className={`widget box tone-${data.tone}`}>
+    <div className={`widget box tone-${meta.tone}`}>
       <div className="left">
-        <span className="title">{data.title}</span>
+        <span className="title">{meta.title}</span>
         <span className="counter">
-          {data.is_money && "$"}
-          {amount.toLocaleString()}
+          {isMoney && "$"}
+          {Number(stats.amount).toLocaleString()}
         </span>
-        <Link to={data.href} className="link">
-          {data.link}
+        <Link to={meta.href} className="link">
+          {meta.link}
         </Link>
       </div>
       <div className="right">
@@ -80,9 +71,9 @@ const Widget = ({ type }) => {
           ) : (
             <KeyboardArrowDownRounded className="arrow" />
           )}
-          <span>{diff}%</span>
+          <span>{stats.diff}%</span>
         </div>
-        <div className="icon-wrap">{data.icon}</div>
+        <div className="icon-wrap">{meta.icon}</div>
       </div>
     </div>
   );

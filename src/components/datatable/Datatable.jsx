@@ -1,5 +1,4 @@
 import "./datatable.scss";
-import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
@@ -132,16 +131,6 @@ function EnhancedTableHead({
   );
 }
 
-EnhancedTableHead.propTypes = {
-  columns: PropTypes.array.isRequired,
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired,
-};
-
 function EnhancedTableToolbar({
   numSelected,
   title,
@@ -200,14 +189,6 @@ function EnhancedTableToolbar({
     </Toolbar>
   );
 }
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  newPath: PropTypes.string.isRequired,
-  onDelete: PropTypes.func.isRequired,
-  isDeleting: PropTypes.bool,
-};
 
 function renderCell(column, row, resourcePath) {
   switch (column.type) {
@@ -511,7 +492,3 @@ export default function DataTable({ resource = "users" }) {
     </Box>
   );
 }
-
-DataTable.propTypes = {
-  resource: PropTypes.oneOf(["users", "products", "posts"]),
-};

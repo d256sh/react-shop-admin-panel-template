@@ -22,10 +22,6 @@ export const addUser = createAsyncThunk("users/addUser", async (payload) => {
   return fakeStoreService.createUser(payload);
 });
 
-export const removeUser = createAsyncThunk("users/removeUser", async (id) => {
-  return fakeStoreService.deleteUser(id);
-});
-
 export const removeUsers = createAsyncThunk("users/removeUsers", async (ids) => {
   await Promise.all(ids.map((id) => fakeStoreService.deleteUser(id)));
   return ids;
@@ -38,9 +34,6 @@ const usersSlice = createSlice({
     clearCurrentUser(state) {
       state.current = null;
       state.currentStatus = "idle";
-    },
-    resetUsersError(state) {
-      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -86,9 +79,6 @@ const usersSlice = createSlice({
         state.actionStatus = "failed";
         state.error = action.error.message;
       })
-      .addCase(removeUser.fulfilled, (state, action) => {
-        state.items = state.items.filter((item) => item.id !== action.payload);
-      })
       .addCase(removeUsers.pending, (state) => {
         state.actionStatus = "loading";
       })
@@ -103,7 +93,7 @@ const usersSlice = createSlice({
   },
 });
 
-export const { clearCurrentUser, resetUsersError } = usersSlice.actions;
+export const { clearCurrentUser } = usersSlice.actions;
 
 export const selectUsers = (state) => state.users.items;
 export const selectUsersStatus = (state) => state.users.status;
@@ -111,10 +101,5 @@ export const selectUsersError = (state) => state.users.error;
 export const selectUsersActionStatus = (state) => state.users.actionStatus;
 export const selectCurrentUser = (state) => state.users.current;
 export const selectCurrentUserStatus = (state) => state.users.currentStatus;
-export const selectUserById = (id) => (state) =>
-  state.users.items.find((item) => String(item.id) === String(id)) ??
-  (state.users.current && String(state.users.current.id) === String(id)
-    ? state.users.current
-    : null);
 
 export default usersSlice.reducer;
