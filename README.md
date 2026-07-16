@@ -1,4 +1,4 @@
-# DA Control — React Admin Panel
+# Dream Store Control — React Admin Panel
 
 **English** · [Українська](./README.uk.md)
 
